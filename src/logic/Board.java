@@ -14,4 +14,8 @@ public class Board {
 
     }
 
+    public Piece getSquare(int x, int y){
+        return board[x][y];
+    }
+
 }
