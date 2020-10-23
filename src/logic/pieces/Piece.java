@@ -19,7 +19,9 @@ public abstract class Piece {
     public abstract List<Move> calculateLegalMoves(Board board);
 
     public Move testSquareLegality(Board board, int x, int y){
-        if (board.getSquare(x, y) == null) {
+        if(!(x > -1 && x < 8 && y > -1 && y < 8)){
+            return null;
+        } else if (board.getSquare(x, y) == null) {
             return new Move(this.position, new int[]{x, y}, this);
         } else if (board.getSquare(x, y).getColor() != this.color) {
             return new Move(this.position, new int[]{x, y}, this);

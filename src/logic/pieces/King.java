@@ -23,21 +23,17 @@ public class King extends Piece {
             System.out.println("" + a[0] + a[1]);
         }
 
-        for(int n = x-1 ; n<x+2 ; n++){
-            for(int i = y-1 ; i<y+2 ; i++){
-                if(!(n == x && i == y)) {
-                    try {
-                        squares.add(new int[]{n, i});
-                    } catch (Exception e){
-                        System.err.println("Dont worry, this is on purpose :)");
-                    }
+        for (int n = x - 1; n < x + 2; n++) {
+            for (int i = y - 1; i < y + 2; i++) {
+                if (!(n == x && i == y)) {
+                    squares.add(new int[]{n, i});
                 }
             }
         }
 
-        for(int n=0; n<squares.size() ; n++){
+        for (int n = 0; n < squares.size(); n++) {
             Move m = testSquareLegality(board, squares.get(n)[0], squares.get(n)[1]);
-            if(m != null){
+            if (m != null) {
                 legalMoves.add(m);
             }
         }
