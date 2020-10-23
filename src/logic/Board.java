@@ -18,4 +18,8 @@ public class Board {
         return board[x][y];
     }
 
+    public void visualize(){
+        System.out.println();
+    }
+
 }
