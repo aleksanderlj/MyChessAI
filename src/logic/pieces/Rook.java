@@ -21,53 +21,49 @@ public class Rook extends Piece {
 
         // Test right
         for(int i = x+1 ; i <= 7 ; i++) {
-            if (board.getSquare(i, y) == null) {
-                legalMoves.add(new Move(this.position, new int[]{i, y}, this));
-            } else if (board.getSquare(i, y).getColor() != this.color) {
-                legalMoves.add(new Move(this.position, new int[]{i, y}, this));
-                break;
-            } else if (board.getSquare(i, y).getColor() == this.color) {
+            Move m = testSquareLegality(board, i, y);
+            if(m != null){
+                legalMoves.add(m);
+            } else {
                 break;
             }
         }
 
         // Test left
         for(int i = x-1 ; i >= 0 ; i--) {
-            if (board.getSquare(i, y) == null) {
-                legalMoves.add(new Move(this.position, new int[]{i, y}, this));
-            } else if (board.getSquare(i, y).getColor() != this.color) {
-                legalMoves.add(new Move(this.position, new int[]{i, y}, this));
-                break;
-            } else if (board.getSquare(i, y).getColor() == this.color) {
+            Move m = testSquareLegality(board, i, y);
+            if(m != null){
+                legalMoves.add(m);
+            } else {
                 break;
             }
         }
 
         // Test up
         for(int i = y+1 ; i <= 7 ; i++) {
-            if (board.getSquare(x, i) == null) {
-                legalMoves.add(new Move(this.position, new int[]{x, i}, this));
-            } else if (board.getSquare(x, i).getColor() != this.color) {
-                legalMoves.add(new Move(this.position, new int[]{x, i}, this));
-                break;
-            } else if (board.getSquare(x, i).getColor() == this.color) {
+            Move m = testSquareLegality(board, x, i);
+            if(m != null){
+                legalMoves.add(m);
+            } else {
                 break;
             }
         }
 
         // Test down
-        for(int i = y-1 ; i >= 0 ; i++) {
-            if (board.getSquare(x, i) == null) {
-                legalMoves.add(new Move(this.position, new int[]{x, i}, this));
-            } else if (board.getSquare(x, i).getColor() != this.color) {
-                legalMoves.add(new Move(this.position, new int[]{x, i}, this));
-                break;
-            } else if (board.getSquare(x, i).getColor() == this.color) {
+        for(int i = y-1 ; i >= 0 ; i--) {
+            Move m = testSquareLegality(board, x, i);
+            if(m != null){
+                legalMoves.add(m);
+            } else {
                 break;
             }
         }
 
-
         return legalMoves;
+    }
+
+    @Override
+    public String toString() {
+        return "R";
     }
 }
