@@ -2,11 +2,27 @@ package logic;
 
 import logic.pieces.*;
 
+import java.awt.*;
+
 public class PieceTest {
     public static void main(String[] args) {
-        testKing();
-        testPawn1();
-        testRook();
+        testKnight();
+    }
+
+    private static void testKnight(){
+        Board board = new Board();
+        Piece knight = new Knight(3, 3, false);
+        Piece pawn1 = new Pawn(1, 2, false);
+        Piece pawn2 = new Pawn(1, 4, true);
+
+        board.placePiece(knight);
+        board.placePiece(pawn1);
+        board.placePiece(pawn2);
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeLegalMoves(knight);
     }
 
     private static void testKing(){

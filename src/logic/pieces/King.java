@@ -19,10 +19,6 @@ public class King extends Piece {
         int x = this.position[0];
         int y = this.position[1];
 
-        for (int[] a : squares) {
-            System.out.println("" + a[0] + a[1]);
-        }
-
         for (int n = x - 1; n < x + 2; n++) {
             for (int i = y - 1; i < y + 2; i++) {
                 if (!(n == x && i == y)) {
