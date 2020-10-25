@@ -8,6 +8,7 @@ import java.util.List;
 public abstract class Piece {
     int[] position;
     boolean color; // false = white, true = black
+    enum SquareStatus {EMPTY, FRIENDLY, ENEMY}
 
     public Piece(int x, int y, boolean color){
         this.position = new int[]{x, y};
@@ -22,9 +23,9 @@ public abstract class Piece {
         if(!(x > -1 && x < 8 && y > -1 && y < 8)){
             return null;
         } else if (board.getSquare(x, y) == null) {
-            return new Move(this.position, new int[]{x, y}, this);
+            return new Move(this.position, new int[]{x, y}, this, true);
         } else if (board.getSquare(x, y).getColor() != this.color) {
-            return new Move(this.position, new int[]{x, y}, this);
+            return new Move(this.position, new int[]{x, y}, this, false);
         } else if (board.getSquare(x, y).getColor() == this.color) {
             return null;
         } else {

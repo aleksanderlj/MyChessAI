@@ -6,7 +6,42 @@ import java.awt.*;
 
 public class PieceTest {
     public static void main(String[] args) {
-        testKnight();
+        testBishopTest();
+    }
+
+    private static void testBishopTest(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new Bishop(3, 3, false),
+                new Pawn(5, 5, false),
+                new Pawn(1, 1, true)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeLegalMoves(arr[0]);
+    }
+
+    private static void testBishop(){
+        Board board = new Board();
+        Piece bishop = new Bishop(3, 3, false);
+        Piece pawn1 = new Pawn(5, 5, false);
+        Piece pawn2 = new Pawn(1, 1, true);
+
+        board.placePiece(bishop);
+        board.placePiece(pawn1);
+        board.placePiece(pawn2);
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeLegalMoves(bishop);
     }
 
     private static void testKnight(){
@@ -68,6 +103,7 @@ public class PieceTest {
     private static void testPawn2(){
         Board board = new Board();
         Piece pawnWhite = new Pawn(3, 1, false);
+        Piece pawnWhite2 = new Pawn(6, 1, false);
         Piece pawnBlack = new Pawn(3, 6, true);
         Piece pawn3 = new Pawn(3, 2, false);
         Piece pawn4 = new Pawn(3, 5, false);
@@ -75,8 +111,12 @@ public class PieceTest {
         Piece pawn6 = new Pawn(2, 2, true);
         Piece pawn7 = new Pawn(4, 5, false);
         Piece pawn8 = new Pawn(2, 5, false);
+        Piece pawn9 = new Pawn(5, 2, false);
+        Piece pawn10 = new Pawn(6, 2, false);
+        Piece pawn11 = new Pawn(7, 2, false);
 
         board.placePiece(pawnWhite);
+        board.placePiece(pawnWhite2);
         board.placePiece(pawnBlack);
         board.placePiece(pawn3);
         board.placePiece(pawn4);
@@ -84,11 +124,15 @@ public class PieceTest {
         board.placePiece(pawn6);
         board.placePiece(pawn7);
         board.placePiece(pawn8);
+        board.placePiece(pawn9);
+        board.placePiece(pawn10);
+        board.placePiece(pawn11);
 
         System.out.println("--------------");
         board.visualizeState();
         System.out.println("----WHITE-----");
         board.visualizeLegalMoves(pawnWhite);
+        board.visualizeLegalMoves(pawnWhite2);
         board.visualizeLegalMoves(pawn3);
         board.visualizeLegalMoves(pawn4);
         System.out.println("----BLACK-----");
@@ -99,7 +143,7 @@ public class PieceTest {
         Board board = new Board();
         Piece rook1 = new Rook(3, 4, false);
         Piece rook2 = new Rook(3, 1, false);
-        Piece rook3 = new Rook(1, 4, false);
+        Piece rook3 = new Rook(1, 4, true);
         Piece rook4 = new Rook(6, 4, false);
         Piece rook5 = new Rook(3, 6, false);
         Piece rook6 = new Rook(7, 6, false);

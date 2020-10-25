@@ -24,6 +24,9 @@ public class Rook extends Piece {
             Move m = testSquareLegality(board, i, y);
             if(m != null){
                 legalMoves.add(m);
+                if (!m.isEmpty()){
+                    break;
+                }
             } else {
                 break;
             }
@@ -34,6 +37,9 @@ public class Rook extends Piece {
             Move m = testSquareLegality(board, i, y);
             if(m != null){
                 legalMoves.add(m);
+                if (!m.isEmpty()){
+                    break;
+                }
             } else {
                 break;
             }
@@ -44,6 +50,9 @@ public class Rook extends Piece {
             Move m = testSquareLegality(board, x, i);
             if(m != null){
                 legalMoves.add(m);
+                if (!m.isEmpty()){
+                    break;
+                }
             } else {
                 break;
             }
@@ -54,6 +63,9 @@ public class Rook extends Piece {
             Move m = testSquareLegality(board, x, i);
             if(m != null){
                 legalMoves.add(m);
+                if (!m.isEmpty()){
+                    break;
+                }
             } else {
                 break;
             }
