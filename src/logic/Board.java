@@ -8,6 +8,7 @@ import java.util.List;
 public class Board {
 
     Piece[][] board;
+    List<Move> moveHistory = new ArrayList<>();
 
     public Board() {
         this.board = new Piece[8][8];
@@ -47,6 +48,22 @@ public class Board {
 
         System.out.println("--------------");
         visualizeState();
+    }
+
+    public void executeMove(Move m){
+        board[m.currentLocation[0]][m.currentLocation[1]] = null;
+        board[m.destinationLocation[0]][m.destinationLocation[1]] = m.piece;
+        moveHistory.add(m);
+    }
+
+    // TODO will crash if reverse is used with no moves
+    public void reverseMove(){
+        Move m = moveHistory.get(moveHistory.size()-1);
+
+        board[m.destinationLocation[0]][m.destinationLocation[1]] = null;
+        board[m.currentLocation[0]][m.currentLocation[1]] = m.piece;
+
+        moveHistory.remove(moveHistory.size()-1);
     }
 
     public Piece getSquare(int x, int y) {
@@ -125,7 +142,7 @@ public class Board {
         List<Move> moves = new ArrayList<>();
 
         for (int n = 0; n<board.length ; n++){
-            for (int i = 0; n<board[0].length ; i++){
+            for (int i = 0; i<board[0].length ; i++){
                 if(board[n][i] != null && board[n][i].getAllegiance() == Allegiance.WHITE){
                     moves.addAll(board[n][i].calculateLegalMoves(this));
                 }

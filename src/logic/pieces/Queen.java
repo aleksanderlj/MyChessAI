@@ -23,7 +23,7 @@ public class Queen extends Piece {
             Move m = testSquareLegality(board, i, y);
             if(m != null){
                 legalMoves.add(m);
-                if (!m.isEmpty()){
+                if (m.isAttack()){
                     break;
                 }
             } else {
@@ -36,7 +36,7 @@ public class Queen extends Piece {
             Move m = testSquareLegality(board, i, y);
             if(m != null){
                 legalMoves.add(m);
-                if (!m.isEmpty()){
+                if (m.isAttack()){
                     break;
                 }
             } else {
@@ -49,7 +49,7 @@ public class Queen extends Piece {
             Move m = testSquareLegality(board, x, i);
             if(m != null){
                 legalMoves.add(m);
-                if (!m.isEmpty()){
+                if (m.isAttack()){
                     break;
                 }
             } else {
@@ -62,7 +62,7 @@ public class Queen extends Piece {
             Move m = testSquareLegality(board, x, i);
             if(m != null){
                 legalMoves.add(m);
-                if (!m.isEmpty()){
+                if (m.isAttack()){
                     break;
                 }
             } else {
@@ -80,7 +80,7 @@ public class Queen extends Piece {
             legalMoves.add(m);
             n++;
             i++;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -92,7 +92,7 @@ public class Queen extends Piece {
             legalMoves.add(m);
             n--;
             i++;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -104,7 +104,7 @@ public class Queen extends Piece {
             legalMoves.add(m);
             n++;
             i--;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -116,7 +116,7 @@ public class Queen extends Piece {
             legalMoves.add(m);
             n--;
             i--;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }

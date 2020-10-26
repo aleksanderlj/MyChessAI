@@ -35,9 +35,9 @@ public abstract class Piece {
         if(!(x > -1 && x < 8 && y > -1 && y < 8)){
             return null;
         } else if (board.getSquare(x, y) == null) {
-            return new Move(this.position, new int[]{x, y}, this, true);
-        } else if (board.getSquare(x, y).getAllegiance() != this.allegiance) {
             return new Move(this.position, new int[]{x, y}, this, false);
+        } else if (board.getSquare(x, y).getAllegiance() != this.allegiance) {
+            return new Move(this.position, new int[]{x, y}, this, true);
         } else if (board.getSquare(x, y).getAllegiance() == this.allegiance) {
             return null;
         } else {
@@ -71,6 +71,10 @@ public abstract class Piece {
 
     public boolean isBlack(){
         return allegiance == Allegiance.BLACK;
+    }
+
+    public int getBaseValue() {
+        return baseValue;
     }
 
     @Override

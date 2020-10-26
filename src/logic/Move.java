@@ -8,17 +8,17 @@ public class Move {
     int[] currentLocation;
     int[] destinationLocation;
     Piece piece;
-    boolean empty;
+    boolean attack;
 
-    public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean empty){
+    public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack){
         this.currentLocation = currentLocation;
         this.destinationLocation = destinationLocation;
         this.piece = piece;
-        this.empty = empty;
+        this.attack = attack;
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public boolean isAttack() {
+        return attack;
     }
 
     @Override

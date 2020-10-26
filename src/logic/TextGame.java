@@ -6,5 +6,11 @@ public class TextGame {
         board.initialize();
         int round = 1;
 
+        board.executeMove(board.getAllWhiteMoves().get(1));
+        board.visualizeState();
+
+        board.reverseMove();
+        board.visualizeState();
+
     }
 }

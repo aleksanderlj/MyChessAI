@@ -27,7 +27,7 @@ public class Bishop extends Piece{
             legalMoves.add(m);
             n++;
             i++;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -39,7 +39,7 @@ public class Bishop extends Piece{
             legalMoves.add(m);
             n--;
             i++;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -51,7 +51,7 @@ public class Bishop extends Piece{
             legalMoves.add(m);
             n++;
             i--;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
@@ -63,7 +63,7 @@ public class Bishop extends Piece{
             legalMoves.add(m);
             n--;
             i--;
-            if (!m.isEmpty()){
+            if (m.isAttack()){
                 break;
             }
         }
