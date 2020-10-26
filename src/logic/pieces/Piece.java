@@ -8,7 +8,6 @@ import java.util.List;
 public abstract class Piece {
     int[] position;
     boolean color; // false = white, true = black
-    enum SquareStatus {EMPTY, FRIENDLY, ENEMY}
 
     public Piece(int x, int y, boolean color){
         this.position = new int[]{x, y};

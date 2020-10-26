@@ -73,6 +73,16 @@ public class Bishop extends Piece{
 
     @Override
     public String toString() {
-        return "B";
+        String s;
+
+        if(!color){
+            s = ANSI.GREEN;
+        } else {
+            s = ANSI.RED;
+        }
+        s += "B";
+        s += ANSI.RESET;
+
+        return s;
     }
 }

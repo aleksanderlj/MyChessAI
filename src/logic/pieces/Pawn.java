@@ -87,6 +87,16 @@ public class Pawn extends Piece {
 
     @Override
     public String toString() {
-        return "P";
+        String s;
+
+        if(!color){
+            s = ANSI.GREEN;
+        } else {
+            s = ANSI.RED;
+        }
+        s += "P";
+        s += ANSI.RESET;
+
+        return s;
     }
 }

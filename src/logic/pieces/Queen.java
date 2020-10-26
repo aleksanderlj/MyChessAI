@@ -6,9 +6,8 @@ import logic.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rook extends Piece {
-
-    public Rook(int x, int y, boolean color) {
+public class Queen extends Piece {
+    public Queen(int x, int y, boolean color) {
         super(x, y, color);
     }
 
@@ -71,6 +70,57 @@ public class Rook extends Piece {
             }
         }
 
+        Move m;
+        int n, i;
+
+        // Test up-right
+        n = x+1;
+        i = y+1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n++;
+            i++;
+            if (!m.isEmpty()){
+                break;
+            }
+        }
+
+        // Test up-left
+        n = x-1;
+        i = y+1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n--;
+            i++;
+            if (!m.isEmpty()){
+                break;
+            }
+        }
+
+        // Test down-right
+        n = x+1;
+        i = y-1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n++;
+            i--;
+            if (!m.isEmpty()){
+                break;
+            }
+        }
+
+        // Test down-left
+        n = x-1;
+        i = y-1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n--;
+            i--;
+            if (!m.isEmpty()){
+                break;
+            }
+        }
+
         return legalMoves;
     }
 
@@ -83,7 +133,7 @@ public class Rook extends Piece {
         } else {
             s = ANSI.RED;
         }
-        s += "R";
+        s += "Q";
         s += ANSI.RESET;
 
         return s;

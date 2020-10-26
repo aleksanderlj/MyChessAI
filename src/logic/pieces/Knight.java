@@ -40,6 +40,16 @@ public class Knight extends Piece{
 
     @Override
     public String toString() {
-        return "H";
+        String s;
+
+        if(!color){
+            s = ANSI.GREEN;
+        } else {
+            s = ANSI.RED;
+        }
+        s += "H";
+        s += ANSI.RESET;
+
+        return s;
     }
 }

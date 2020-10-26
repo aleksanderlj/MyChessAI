@@ -39,6 +39,16 @@ public class King extends Piece {
 
     @Override
     public String toString() {
-        return "K";
+        String s;
+
+        if(!color){
+            s = ANSI.GREEN;
+        } else {
+            s = ANSI.RED;
+        }
+        s += "K";
+        s += ANSI.RESET;
+
+        return s;
     }
 }
