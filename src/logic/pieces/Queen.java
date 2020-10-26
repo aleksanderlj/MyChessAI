@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Queen extends Piece {
-    public Queen(int x, int y, boolean color) {
-        super(x, y, color);
+    public Queen(int x, int y, Allegiance allegiance) {
+        super(x, y, allegiance);
     }
 
     @Override
@@ -122,20 +122,5 @@ public class Queen extends Piece {
         }
 
         return legalMoves;
-    }
-
-    @Override
-    public String toString() {
-        String s;
-
-        if(!color){
-            s = ANSI.GREEN;
-        } else {
-            s = ANSI.RED;
-        }
-        s += "Q";
-        s += ANSI.RESET;
-
-        return s;
     }
 }

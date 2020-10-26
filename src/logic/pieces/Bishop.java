@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece{
-    public Bishop(int x, int y, boolean color) {
-        super(x, y, color);
+    public Bishop(int x, int y, Allegiance allegiance) {
+        super(x, y, allegiance);
     }
 
     @Override
@@ -69,20 +69,5 @@ public class Bishop extends Piece{
         }
 
         return legalMoves;
-    }
-
-    @Override
-    public String toString() {
-        String s;
-
-        if(!color){
-            s = ANSI.GREEN;
-        } else {
-            s = ANSI.RED;
-        }
-        s += "B";
-        s += ANSI.RESET;
-
-        return s;
     }
 }

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends Piece{
-    public Knight(int x, int y, boolean color) {
-        super(x, y, color);
+    public Knight(int x, int y, Allegiance allegiance) {
+        super(x, y, allegiance);
     }
 
     @Override
@@ -36,20 +36,5 @@ public class Knight extends Piece{
         }
 
         return legalMoves;
-    }
-
-    @Override
-    public String toString() {
-        String s;
-
-        if(!color){
-            s = ANSI.GREEN;
-        } else {
-            s = ANSI.RED;
-        }
-        s += "H";
-        s += ANSI.RESET;
-
-        return s;
     }
 }

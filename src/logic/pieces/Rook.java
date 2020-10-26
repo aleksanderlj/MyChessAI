@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Rook extends Piece {
 
-    public Rook(int x, int y, boolean color) {
-        super(x, y, color);
+    public Rook(int x, int y, Allegiance allegiance) {
+        super(x, y, allegiance);
     }
 
     @Override
@@ -72,20 +72,5 @@ public class Rook extends Piece {
         }
 
         return legalMoves;
-    }
-
-    @Override
-    public String toString() {
-        String s;
-
-        if(!color){
-            s = ANSI.GREEN;
-        } else {
-            s = ANSI.RED;
-        }
-        s += "R";
-        s += ANSI.RESET;
-
-        return s;
     }
 }

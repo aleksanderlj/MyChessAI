@@ -13,9 +13,9 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Queen(3, 3, false),
-                new Pawn(3, 6, false),
-                new Pawn(5, 1, true)
+                new Queen(3, 3, Allegiance.WHITE),
+                new Pawn(3, 6, Allegiance.WHITE),
+                new Pawn(5, 1, Allegiance.BLACK)
         };
 
         for (Piece p : arr) {
@@ -32,9 +32,9 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Bishop(3, 3, false),
-                new Pawn(5, 5, false),
-                new Pawn(1, 1, true)
+                new Bishop(3, 3, Allegiance.WHITE),
+                new Pawn(5, 5, Allegiance.WHITE),
+                new Pawn(1, 1, Allegiance.BLACK)
         };
 
         for (Piece p : arr) {
@@ -51,9 +51,9 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Knight(3, 3, false),
-                new Pawn(1, 2, false),
-                new Pawn(1, 4, true)
+                new Knight(3, 3, Allegiance.WHITE),
+                new Pawn(1, 2, Allegiance.WHITE),
+                new Pawn(1, 4, Allegiance.BLACK)
         };
 
         for (Piece p : arr) {
@@ -70,11 +70,11 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new King(3, 1, false),
-                new King(0, 0, false),
-                new Pawn(3, 6, true),
-                new Pawn(2, 2, true),
-                new Pawn(2, 0, false),
+                new King(3, 1, Allegiance.WHITE),
+                new King(0, 0, Allegiance.WHITE),
+                new Pawn(3, 6, Allegiance.BLACK),
+                new Pawn(2, 2, Allegiance.BLACK),
+                new Pawn(2, 0, Allegiance.WHITE),
         };
 
         for (Piece p : arr) {
@@ -92,9 +92,9 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Pawn(3, 1, false),
-                new Pawn(7, 7, false),
-                new Pawn(3, 6, true),
+                new Pawn(3, 1, Allegiance.WHITE),
+                new Pawn(7, 7, Allegiance.WHITE),
+                new Pawn(3, 6, Allegiance.BLACK),
         };
 
         for (Piece p : arr) {
@@ -114,18 +114,18 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Pawn(3, 1, false),
-                new Pawn(6, 1, false),
-                new Pawn(3, 6, true),
-                new Pawn(3, 2, false),
-                new Pawn(3, 5, false),
-                new Pawn(4, 2, true),
-                new Pawn(2, 2, true),
-                new Pawn(4, 5, false),
-                new Pawn(2, 5, false),
-                new Pawn(5, 2, false),
-                new Pawn(6, 2, true),
-                new Pawn(7, 2, false),
+                new Pawn(3, 1, Allegiance.WHITE),
+                new Pawn(6, 1, Allegiance.WHITE),
+                new Pawn(3, 6, Allegiance.BLACK),
+                new Pawn(3, 2, Allegiance.WHITE),
+                new Pawn(3, 5, Allegiance.WHITE),
+                new Pawn(4, 2, Allegiance.BLACK),
+                new Pawn(2, 2, Allegiance.BLACK),
+                new Pawn(4, 5, Allegiance.WHITE),
+                new Pawn(2, 5, Allegiance.WHITE),
+                new Pawn(5, 2, Allegiance.WHITE),
+                new Pawn(6, 2, Allegiance.BLACK),
+                new Pawn(7, 2, Allegiance.WHITE),
         };
 
         for (Piece p : arr) {
@@ -147,12 +147,12 @@ public class PieceTest {
         Board board = new Board();
 
         Piece[] arr = {
-                new Rook(3, 4, false),
-                new Rook(3, 1, false),
-                new Rook(1, 4, true),
-                new Rook(6, 4, false),
-                new Rook(3, 6, false),
-                new Rook(7, 6, false),
+                new Rook(3, 4, Allegiance.WHITE),
+                new Rook(3, 1, Allegiance.WHITE),
+                new Rook(1, 4, Allegiance.BLACK),
+                new Rook(6, 4, Allegiance.WHITE),
+                new Rook(3, 6, Allegiance.WHITE),
+                new Rook(7, 6, Allegiance.WHITE),
         };
 
         for (Piece p : arr) {

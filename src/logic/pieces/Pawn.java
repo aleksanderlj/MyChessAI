@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
-    public Pawn(int x, int y, boolean color) {
-        super(x, y, color);
+    public Pawn(int x, int y, Allegiance allegiance) {
+        super(x, y, allegiance);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class Pawn extends Piece {
         int x = this.position[0];
         int y = this.position[1];
 
-        if (!color) { // white
+        if (allegiance == Allegiance.WHITE) { // white
             Move m = testSquareLegality(board, x, y + 1);
             if (m != null) {
                 legalMoves.add(m);
@@ -33,13 +33,13 @@ public class Pawn extends Piece {
 
             // Hvis der kan tages en brik
             if (x + 1 < 8 && y + 1 < 8) {
-                if (board.getSquare(x + 1, y + 1) != null && board.getSquare(x + 1, y + 1).color != this.color) {
+                if (board.getSquare(x + 1, y + 1) != null && board.getSquare(x + 1, y + 1).getAllegiance() != this.allegiance) {
                     legalMoves.add(new Move(this.position, new int[]{x + 1, y + 1}, this, false));
                 }
             }
 
             if (x - 1 > -1 && y + 1 < 8) {
-                if (board.getSquare(x - 1, y + 1) != null && board.getSquare(x - 1, y + 1).color != this.color) {
+                if (board.getSquare(x - 1, y + 1) != null && board.getSquare(x - 1, y + 1).getAllegiance() != this.allegiance) {
                     legalMoves.add(new Move(this.position, new int[]{x - 1, y + 1}, this, false));
                 }
             }
@@ -59,13 +59,13 @@ public class Pawn extends Piece {
 
             // Hvis der kan tages en brik
             if (x + 1 < 8 && y - 1 > -1) {
-                if (board.getSquare(x + 1, y - 1) != null && board.getSquare(x + 1, y - 1).color != this.color) {
+                if (board.getSquare(x + 1, y - 1) != null && board.getSquare(x + 1, y - 1).getAllegiance() != this.allegiance) {
                     legalMoves.add(new Move(this.position, new int[]{x + 1, y - 1}, this, false));
                 }
             }
 
             if (x - 1 > -1 && y - 1 > -1) {
-                if (board.getSquare(x - 1, y - 1) != null && board.getSquare(x - 1, y - 1).color != this.color) {
+                if (board.getSquare(x - 1, y - 1) != null && board.getSquare(x - 1, y - 1).getAllegiance() != this.allegiance) {
                     legalMoves.add(new Move(this.position, new int[]{x - 1, y - 1}, this, false));
                 }
             }
@@ -83,20 +83,5 @@ public class Pawn extends Piece {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public String toString() {
-        String s;
-
-        if(!color){
-            s = ANSI.GREEN;
-        } else {
-            s = ANSI.RED;
-        }
-        s += "P";
-        s += ANSI.RESET;
-
-        return s;
     }
 }
