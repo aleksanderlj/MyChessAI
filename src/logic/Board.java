@@ -8,7 +8,7 @@ import java.util.List;
 public class Board {
 
     Piece[][] board;
-    List<Move> moveHistory = new ArrayList<>();
+    List<Move> moveHistory = new ArrayList<>(); // TODO Make linkedlist?
 
     public Board() {
         this.board = new Piece[8][8];
