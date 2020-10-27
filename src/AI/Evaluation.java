@@ -8,6 +8,8 @@ public class Evaluation {
     public static final int START_DEPTH = 5;
     public static Move bestMove;
 
+
+    //https://www.youtube.com/watch?v=l-hh51ncgDI
     public static int minimax(Board board, int depth, boolean maximizingPlayer, Allegiance allegiance){
         if(depth == 0) { // || TODO Game is over
             return scoreEvaluation(board, allegiance);
