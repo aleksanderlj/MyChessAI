@@ -68,10 +68,6 @@ public class MoveBuilder {
             return null;
         }
 
-        // TODO COMPARE MOVES TO ALL LEGAL MOVES TO SEE IF IT IS LEGAL
-        // TODO Dont allow moving of enemy pieces
-        // TODO TIME THE ALGORITHM
-
         return m;
     }
 }

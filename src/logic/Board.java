@@ -51,6 +51,10 @@ public class Board {
         visualizeState();
     }
 
+    //TODO
+    // Castling
+    // Pawn promotion
+    // En passant
     public void executeMove(Move m){
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
         board[m.destinationLocation[0]][m.destinationLocation[1]] = m.piece;
@@ -78,7 +82,7 @@ public class Board {
     public void visualizeState() {
         StringBuilder s = new StringBuilder();
         for (int y = board.length - 1; y >= 0; y--) {
-            s.append(y + " " + (y+1) + " ");
+            s.append(ANSI.GRAY + y + ANSI.RESET +  " " + (y+1) + " ");
             for (int x = 0; x < board[0].length; x++) {
                 if (board[x][y] != null) {
                     s.append(board[x][y] + "  ");
@@ -90,7 +94,9 @@ public class Board {
         }
         s.append(
                 "    A  B  C  D  E  F  G  H\n" +
-                "    0  1  2  3  4  5  6  7\n");
+                        ANSI.GRAY +
+                "    0  1  2  3  4  5  6  7\n" +
+                ANSI.RESET);
         System.out.println(s);
     }
 

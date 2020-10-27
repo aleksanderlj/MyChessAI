@@ -5,6 +5,8 @@ import logic.Board;
 import logic.Move;
 import logic.pieces.Allegiance;
 
+import javax.swing.*;
+
 public class TextGame {
     public static void main(String[] args) {
         Board board = new Board();
@@ -23,16 +25,6 @@ public class TextGame {
         }
          */
 
-        /*
-
-        board.executeMove(board.getAllMoves(Allegiance.WHITE).get(1));
-        board.visualizeState();
-
-        board.reverseMove();
-        board.visualizeState();
-
-         */
-
     }
 
     public static void playerMoves(Board board, Allegiance allegiance){
@@ -49,10 +41,12 @@ public class TextGame {
     }
 
     public static void aiMoves(Board board, Allegiance allegiance){
-        System.nanoTime();
-        Evaluation.minimax(board, Evaluation.START_DEPTH, true, allegiance);
+        final long startTime = System.currentTimeMillis();
+        Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance);
         board.executeMove(Evaluation.bestMove);
+        final long endTime = System.currentTimeMillis();
         System.out.println(Evaluation.bestMove);
         board.visualizeState();
+        System.out.printf("Time taken: %.4fs\n", (endTime-startTime)/1000.0);
     }
 }
