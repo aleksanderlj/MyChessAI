@@ -4,7 +4,7 @@ import logic.pieces.Piece;
 
 import java.util.Arrays;
 
-public class Move {
+public class Move implements Comparable<Move> {
     int[] currentLocation;
     int[] destinationLocation;
     Piece piece;
@@ -29,4 +29,5 @@ public class Move {
                 ", piece=" + piece +
                 '}';
     }
+
 }

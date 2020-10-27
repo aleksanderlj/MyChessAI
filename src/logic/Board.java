@@ -1,5 +1,6 @@
 package logic;
 
+import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
 import logic.pieces.*;
 
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ public class Board {
         List<Piece> pieces = new ArrayList<>();
 
         for (int n = 0; n<board.length ; n++){
-            for (int i = 0; n<board[0].length ; i++){
+            for (int i = 0; i<board[0].length ; i++){
                 if(board[n][i] != null){
                     pieces.add(board[n][i]);
                 }
@@ -138,26 +139,12 @@ public class Board {
         return pieces;
     }
 
-    public List<Move> getAllWhiteMoves(){
+    public List<Move> getAllMoves(Allegiance allegiance){
         List<Move> moves = new ArrayList<>();
 
         for (int n = 0; n<board.length ; n++){
             for (int i = 0; i<board[0].length ; i++){
-                if(board[n][i] != null && board[n][i].getAllegiance() == Allegiance.WHITE){
-                    moves.addAll(board[n][i].calculateLegalMoves(this));
-                }
-            }
-        }
-
-        return moves;
-    }
-
-    public List<Move> getAllBlackMoves(){
-        List<Move> moves = new ArrayList<>();
-
-        for (int n = 0; n<board.length ; n++){
-            for (int i = 0; n<board[0].length ; i++){
-                if(board[n][i] != null && board[n][i].getAllegiance() == Allegiance.WHITE){
+                if(board[n][i] != null && board[n][i].getAllegiance() == allegiance){
                     moves.addAll(board[n][i].calculateLegalMoves(this));
                 }
             }
