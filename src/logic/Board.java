@@ -15,6 +15,7 @@ public class Board {
         this.board = new Piece[8][8];
     }
 
+
     public void initialize() {
         List<Piece> arr = new ArrayList<>();
 
