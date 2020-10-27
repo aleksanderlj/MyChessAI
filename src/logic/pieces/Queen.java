@@ -6,9 +6,8 @@ import logic.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rook extends Piece {
-
-    public Rook(int x, int y, Allegiance allegiance) {
+public class Queen extends Piece {
+    public Queen(int x, int y, Allegiance allegiance) {
         super(x, y, allegiance);
     }
 
@@ -67,6 +66,57 @@ public class Rook extends Piece {
                     break;
                 }
             } else {
+                break;
+            }
+        }
+
+        Move m;
+        int n, i;
+
+        // Test up-right
+        n = x+1;
+        i = y+1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n++;
+            i++;
+            if (m.isAttack()){
+                break;
+            }
+        }
+
+        // Test up-left
+        n = x-1;
+        i = y+1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n--;
+            i++;
+            if (m.isAttack()){
+                break;
+            }
+        }
+
+        // Test down-right
+        n = x+1;
+        i = y-1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n++;
+            i--;
+            if (m.isAttack()){
+                break;
+            }
+        }
+
+        // Test down-left
+        n = x-1;
+        i = y-1;
+        while((m = testSquareLegality(board, n, i)) != null){
+            legalMoves.add(m);
+            n--;
+            i--;
+            if (m.isAttack()){
                 break;
             }
         }
