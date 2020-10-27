@@ -3,8 +3,9 @@ package logic;
 import logic.pieces.Piece;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-public class Move implements Comparable<Move> {
+public class Move {
     int[] currentLocation;
     int[] destinationLocation;
     Piece piece;
@@ -30,4 +31,14 @@ public class Move implements Comparable<Move> {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return attack == move.attack &&
+                Arrays.equals(currentLocation, move.currentLocation) &&
+                Arrays.equals(destinationLocation, move.destinationLocation) &&
+                Objects.equals(piece, move.piece);
+    }
 }
