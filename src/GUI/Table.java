@@ -3,6 +3,7 @@ package GUI;
 
 
 import logic.Board;
+import logic.Move;
 import logic.pieces.Piece;
 
 import javax.swing.*;
@@ -115,13 +116,26 @@ public class Table {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent mouseEvent) {
-
                     if (isRightMouseButton(mouseEvent)){
+                        // cancel the move
                         sourceSquare = null;
                         destinationSquare = null;
                         humanMovedPiece = null;
 
                     }else if (isLeftMouseButton(mouseEvent)){
+                        if (sourceSquare == null){
+                            // need to fix the square id it should give x and y cord
+                           // sourceSquare = chessboard.getSquare(squareId);
+                            // need a method for getPiece
+                           // humanMovedPiece = sourceSquare.getPiece();
+                            if (humanMovedPiece == null){
+                                sourceSquare = null;
+                            }
+                        }else {
+                           // destinationSquare = chessboard.getSquare(squareId);
+                            // logic from Move class, to actually move the piece
+                            final Move move = null;
+                        }
 
                         // TODO Here we wanna move the piece, have to get the squares x and y first tho!
 
