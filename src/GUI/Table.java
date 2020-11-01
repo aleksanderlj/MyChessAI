@@ -1,28 +1,42 @@
 package GUI;
 
+
+
 import logic.Board;
-import sun.plugin2.util.ColorUtil;
+import logic.pieces.Piece;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Table {
     
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
+    private final Board chessboard;
+
+    private Piece sourceSquare;
+    private Piece destinationSquare;
+    private Piece humanMovedPiece;
 
     Color lightSquareColor = new Color(193, 138, 84);
     Color darkSquareColor = new Color(71, 30, 7);
     Color borderColor = new Color(54, 52, 52);
 
 
+
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(1000,1000);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,500);
     private final static Dimension SQUARE_PANEL_DIMENSION = new Dimension(20,20);
+
+    private static String pieceImagePath = "pieceArt/pieces" +
+            "";
 
     public Table() {
         this.gameFrame = new JFrame("Chess");
@@ -32,9 +46,11 @@ public class Table {
         this.gameFrame.setJMenuBar(tableMenubar);
 
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        this.chessboard = new Board();
+        chessboard.initialize();
 
 
-        this.boardPanel = new BoardPanel();
+        this.boardPanel =  new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
 
@@ -94,10 +110,58 @@ public class Table {
             this.squareId = squareId;
             setPreferredSize(SQUARE_PANEL_DIMENSION);
             assignSquareColor();
+            assignPieceIcon(chessboard);
+
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent mouseEvent) {
+
+                    if (isRightMouseButton(mouseEvent)){
+                        sourceSquare = null;
+                        destinationSquare = null;
+                        humanMovedPiece = null;
+
+                    }else if (isLeftMouseButton(mouseEvent)){
+
+                        // TODO Here we wanna move the piece, have to get the squares x and y first tho!
+
+
+                    }
+                }
+
+                @Override
+                public void mousePressed(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseReleased(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseEntered(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseExited(final MouseEvent mouseEvent) {
+
+                }
+            });
+
             validate();
         }
+
+        private void assignPieceIcon(final Board board){
+            this.removeAll();
+            // TODO : need to get the x and y postion of the square from logic.Board
+            // I think .......
+        }
+
+
         private void assignSquareColor() {
-            if(squareId%16 >= 0 && squareId%16 < 8) {
+            if(squareId % 16 >= 0 && squareId % 16 < 8) {
                 if (squareId % 2 == 0) {
                     this.setBackground(lightSquareColor);
                 } else {
@@ -110,9 +174,9 @@ public class Table {
                     setBackground(darkSquareColor);
                 }
             }
-
-
         }
     }
+
+
 
 }
