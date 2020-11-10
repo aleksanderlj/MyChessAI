@@ -1,15 +1,17 @@
 package logic;
 
+import com.sun.xml.internal.ws.api.Component;
 import logic.pieces.Piece;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Move {
+public class Move implements Comparable<Move> {
     int[] currentLocation;
     int[] destinationLocation;
     Piece piece;
     boolean attack;
+    int heuristicValue;
 
     public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack){
         this.currentLocation = currentLocation;
@@ -28,6 +30,7 @@ public class Move {
                 "currentLocation=" + Arrays.toString(currentLocation) +
                 ", destinationLocation=" + Arrays.toString(destinationLocation) +
                 ", piece=" + piece +
+                ", heuristicValue=" + heuristicValue +
                 '}';
     }
 
@@ -40,5 +43,18 @@ public class Move {
                 Arrays.equals(currentLocation, move.currentLocation) &&
                 Arrays.equals(destinationLocation, move.destinationLocation) &&
                 Objects.equals(piece, move.piece);
+    }
+
+    public int getHeuristicValue() {
+        return heuristicValue;
+    }
+
+    public void setHeuristicValue(int heuristicValue) {
+        this.heuristicValue = heuristicValue;
+    }
+
+    @Override
+    public int compareTo(Move o) {
+        return this.heuristicValue - o.getHeuristicValue();
     }
 }

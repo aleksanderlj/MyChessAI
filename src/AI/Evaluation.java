@@ -4,6 +4,11 @@ import logic.Board;
 import logic.Move;
 import logic.pieces.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class Evaluation {
     public static final int START_DEPTH = 7;
     public static Move bestMove;
@@ -15,13 +20,35 @@ public class Evaluation {
             return scoreEvaluation(board, allegiance);
         }
 
+
+
+
+        List<Move> possibleMoves = board.getAllMoves(allegiance);
+
+
+        // Move ordering
+        /*
+        for(Move m : possibleMoves){
+            Board tempBoard = new Board(board);
+            tempBoard.executeMove(m);
+            m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance));
+            //board.reverseMove();
+        }
+
+         */
+
+
         if(maximizingPlayer){
             int maxEval = Integer.MIN_VALUE;
 
-            for (Move m : board.getAllMoves(allegiance)) {
-                board.executeMove(m);
+            //possibleMoves.sort(Collections.reverseOrder()); //MAX
+            //Collections.sort(possibleMoves);
 
-                int eval = minimax(board, depth-1, alpha, beta, false, allegiance);
+            for (Move m : possibleMoves) {
+                Board tempBoard = new Board(board);
+                tempBoard.executeMove(m);
+
+                int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
 
                 if(depth == START_DEPTH){
                     if(eval > maxEval){
@@ -31,7 +58,7 @@ public class Evaluation {
 
                 maxEval = Math.max(maxEval, eval);
 
-                board.reverseMove();
+                //board.reverseMove();
 
                 alpha = Math.max(alpha, eval);
                 if(beta <= alpha){
@@ -42,13 +69,17 @@ public class Evaluation {
         } else {
             int minEval = Integer.MAX_VALUE;
 
-            for (Move m : board.getAllMoves(allegiance)) {
-                board.executeMove(m);
+            //possibleMoves.sort(Collections.reverseOrder());
+            //Collections.sort(possibleMoves); // MIN
 
-                int eval = minimax(board, depth-1, alpha, beta, true, allegiance);
+            for (Move m : possibleMoves) {
+                Board tempBoard = new Board(board);
+                tempBoard.executeMove(m);
+
+                int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
                 minEval = Math.min(minEval, eval);
 
-                board.reverseMove();
+                //board.reverseMove();
 
                 beta = Math.min(beta, eval);
                 if(beta <= alpha){
@@ -88,12 +119,51 @@ public class Evaluation {
         int score;
 
         score = p.getBaseValue();
+        score += parsePositionScore(p);
 
         return score;
     }
 
     public Move getBestMove() {
         return bestMove;
+    }
+
+    public static int parsePositionScore(Piece p){
+        int x = p.x();
+        int y = p.y();
+        int posScore = 0;
+
+        if(p.getAllegiance() == Allegiance.WHITE) {
+            if (p instanceof Bishop) {
+                posScore = PreferredCoordinates.WHITE_BISHOP[x][y];
+            } else if (p instanceof King) {
+                posScore = PreferredCoordinates.WHITE_KING[x][y];
+            } else if (p instanceof Knight) {
+                posScore = PreferredCoordinates.WHITE_KNIGHT[x][y];
+            } else if (p instanceof Pawn) {
+                posScore = PreferredCoordinates.WHITE_PAWN[x][y];
+            } else if (p instanceof Queen) {
+                posScore = PreferredCoordinates.WHITE_QUEEN[x][y];
+            } else if (p instanceof Rook) {
+                posScore = PreferredCoordinates.WHITE_ROOK[x][y];
+            }
+        } else {
+            if (p instanceof Bishop) {
+                posScore = PreferredCoordinates.BLACK_BISHOP[x][y];
+            } else if (p instanceof King) {
+                posScore = PreferredCoordinates.BLACK_KING[x][y];
+            } else if (p instanceof Knight) {
+                posScore = PreferredCoordinates.BLACK_KNIGHT[x][y];
+            } else if (p instanceof Pawn) {
+                posScore = PreferredCoordinates.BLACK_PAWN[x][y];
+            } else if (p instanceof Queen) {
+                posScore = PreferredCoordinates.BLACK_QUEEN[x][y];
+            } else if (p instanceof Rook) {
+                posScore = PreferredCoordinates.BLACK_ROOK[x][y];
+            }
+        }
+
+        return posScore;
     }
 }
 
