@@ -176,7 +176,7 @@ public class Evaluation {
 //TODO:
 // -Base value
 // Base value modifier
-// Preferred coordinates
+// -Preferred coordinates
 // isMate
 // Castling
 // Double pawn
