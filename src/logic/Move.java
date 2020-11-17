@@ -19,6 +19,7 @@ public class Move implements Comparable<Move> {
         this.destinationLocation = destinationLocation;
         this.piece = piece;
         this.attack = attack;
+        this.heuristicValue = 0;
         this.attackedPiece = attackedPiece;
     }
 
