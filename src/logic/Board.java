@@ -75,10 +75,15 @@ public class Board {
 
     // TODO will crash if reverse is used with no moves
     // TODO bugged. Doesn't restore piece that was attacked
+    // TODO Castling, pawn promotion (+attack), en passant etc.
     public void reverseMove() {
         Move m = moveHistory.get(moveHistory.size() - 1);
 
-        board[m.destinationLocation[0]][m.destinationLocation[1]] = null;
+        if(m.isAttack()) {
+            board[m.destinationLocation[0]][m.destinationLocation[1]] = m.attackedPiece;
+        } else {
+            board[m.destinationLocation[0]][m.destinationLocation[1]] = null;
+        }
         board[m.currentLocation[0]][m.currentLocation[1]] = m.piece;
 
         moveHistory.remove(moveHistory.size() - 1);

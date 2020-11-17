@@ -35,9 +35,9 @@ public abstract class Piece {
         if(!(x > -1 && x < 8 && y > -1 && y < 8)){
             return null;
         } else if (board.getSquare(x, y) == null) {
-            return new Move(this.position, new int[]{x, y}, this, false);
+            return new Move(this.position, new int[]{x, y}, this, false, null);
         } else if (board.getSquare(x, y).getAllegiance() != this.allegiance) {
-            return new Move(this.position, new int[]{x, y}, this, true);
+            return new Move(this.position, new int[]{x, y}, this, true, board.getSquare(x, y));
         } else if (board.getSquare(x, y).getAllegiance() == this.allegiance) {
             return null;
         } else {

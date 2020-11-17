@@ -12,12 +12,14 @@ public class Move implements Comparable<Move> {
     Piece piece;
     boolean attack;
     int heuristicValue;
+    Piece attackedPiece;
 
-    public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack){
+    public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack, Piece attackedPiece){
         this.currentLocation = currentLocation;
         this.destinationLocation = destinationLocation;
         this.piece = piece;
         this.attack = attack;
+        this.attackedPiece = attackedPiece;
     }
 
     public boolean isAttack() {

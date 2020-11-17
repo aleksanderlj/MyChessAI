@@ -47,8 +47,10 @@ public class Evaluation {
             for (Move m : possibleMoves) {
                 Board tempBoard = new Board(board);
                 tempBoard.executeMove(m);
-
                 int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
+
+                //board.executeMove(m);
+                //int eval = minimax(board, depth-1, alpha, beta, false, allegiance);
 
                 if(depth == START_DEPTH){
                     if(eval > maxEval){
@@ -75,8 +77,11 @@ public class Evaluation {
             for (Move m : possibleMoves) {
                 Board tempBoard = new Board(board);
                 tempBoard.executeMove(m);
-
                 int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
+
+                //board.executeMove(m);
+                //int eval = minimax(board, depth-1, alpha, beta, true, allegiance);
+
                 minEval = Math.min(minEval, eval);
 
                 //board.reverseMove();

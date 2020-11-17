@@ -53,7 +53,7 @@ public class MoveBuilder {
             isAttack = true;
         }
 
-        Move m = new Move(start, end, p, isAttack);
+        Move m = new Move(start, end, p, isAttack, destination); // Destination might be friendly
 
         boolean isLegal = false;
         List<Move> legalMoves = board.getAllMoves(allegiance);
