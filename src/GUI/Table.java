@@ -6,13 +6,18 @@ import logic.Board;
 import logic.Move;
 import logic.pieces.Piece;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
 
@@ -27,19 +32,19 @@ public class Table {
     private Piece humanMovedPiece;
 
     Color lightSquareColor = new Color(193, 138, 84);
-    Color darkSquareColor = new Color(71, 30, 7);
+    Color darkSquareColor = new Color(109, 48, 13);
     Color borderColor = new Color(54, 52, 52);
 
 
 
-    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(1000,1000);
-    private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,500);
+    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(1200,1200);
+    private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,600);
     private final static Dimension SQUARE_PANEL_DIMENSION = new Dimension(20,20);
 
     private static String pieceImagePath = "pieceArt/pieces" +
             "";
 
-    public Table() {
+    public Table() throws IOException {
         this.gameFrame = new JFrame("Chess");
         this.gameFrame.setLayout(new BorderLayout());
         final JMenuBar tableMenubar = new JMenuBar();
@@ -54,8 +59,43 @@ public class Table {
         this.boardPanel =  new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
-
         this.gameFrame.setVisible(true);
+
+        assignStartBoard(chessboard);
+
+    }
+
+    private int getCoord(int[] coords){
+        return (coords[1]*8)+coords[0];
+    }
+
+
+    private int[] getCoords(int n){
+        if(n == 0){
+            return new int[]{0,0};
+        }
+
+        return new int[]{n%8, n/8};
+    }
+
+    private void assignStartBoard(final Board board){
+        //this.boardPanel.removeAll();
+
+        try{
+            final File filepathWR = new File("pieceArt/pieces/WR.gif");
+            final BufferedImage imageWR = ImageIO.read(filepathWR);
+            List<Piece> list = board.getAllPieces();
+
+
+
+           for(Piece p : list){
+                SquarePanel sp = boardPanel.boardSquares.get(getCoord(p.getPosition()));
+
+                sp.add(new JLabel(new ImageIcon(imageWR)));
+
+            }
+
+        }catch (Exception e){}
 
     }
 
@@ -113,6 +153,7 @@ public class Table {
             assignSquareColor();
             assignPieceIcon(chessboard);
 
+
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent mouseEvent) {
@@ -169,8 +210,14 @@ public class Table {
 
         private void assignPieceIcon(final Board board){
             this.removeAll();
+            int[] coords = getCoords(this.squareId);
+            //if (board.getSquare(coords[0], coords[1]))
             // TODO : need to get the x and y postion of the square from logic.Board
-            // I think .......
+
+
+            for(Piece p : board.getAllPieces()){
+                getCoord(p.getPosition());
+            }
         }
 
 
