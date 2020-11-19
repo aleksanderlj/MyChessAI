@@ -70,6 +70,8 @@ public class Board {
     public void executeMove(Move m) {
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
         board[m.destinationLocation[0]][m.destinationLocation[1]] = m.piece;
+        m.piece.setPosition(m.destinationLocation);
+        //checkPawnPromotion(m.piece); // TODO This will mess with Reverse Move
         moveHistory.add(m);
     }
 
@@ -87,6 +89,20 @@ public class Board {
         board[m.currentLocation[0]][m.currentLocation[1]] = m.piece;
 
         moveHistory.remove(moveHistory.size() - 1);
+    }
+
+    private Piece checkPawnPromotion(Piece p){
+        if(p instanceof Pawn){
+            if(p.getAllegiance() == Allegiance.WHITE && p.y() == 7) {
+                p = new Queen(p.x(), p.y(), Allegiance.WHITE);
+                board[p.x()][p.y()] = p;
+            } else if(p.getAllegiance() == Allegiance.BLACK && p.y() == 0) {
+                p = new Queen(p.x(), p.y(), Allegiance.BLACK);
+                System.out.println(p);
+                board[p.x()][p.y()] = p;
+            }
+        }
+        return p;
     }
 
     public Piece getSquare(int x, int y) {

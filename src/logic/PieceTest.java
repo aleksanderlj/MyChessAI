@@ -6,7 +6,28 @@ import java.awt.*;
 
 public class PieceTest {
     public static void main(String[] args) {
-        testQueen();
+        testPromotion();
+    }
+
+    private static void testPromotion(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new Pawn(3, 6, Allegiance.WHITE),
+                new Pawn(3, 1, Allegiance.BLACK)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.executeMove(arr[0].calculateLegalMoves(board).get(0));
+        board.executeMove(arr[1].calculateLegalMoves(board).get(0));
+        board.visualizeState();
+        System.out.println(arr[0].y());
     }
 
     private static void testQueen() {
