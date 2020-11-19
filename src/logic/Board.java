@@ -19,7 +19,7 @@ public class Board {
         Piece[][] newBoard = new Piece[8][8];
         for(int x = 0 ; x<newBoard.length ; x++){
             for(int y = 0 ; y<newBoard.length ; y++){
-                newBoard[x][y] = boardObject.board[x][y];
+                newBoard[x][y] = Piece.clone(boardObject.board[x][y]);
             }
         }
 
@@ -65,13 +65,15 @@ public class Board {
 
     //TODO
     // Castling
-    // Pawn promotion
+    // --Pawn promotion
     // En passant
     public void executeMove(Move m) {
+        Piece p = board[m.currentLocation[0]][m.currentLocation[1]];
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
-        board[m.destinationLocation[0]][m.destinationLocation[1]] = m.piece;
-        m.piece.setPosition(m.destinationLocation);
-        //checkPawnPromotion(m.piece); // TODO This will mess with Reverse Move
+
+        board[m.destinationLocation[0]][m.destinationLocation[1]] = p;
+        p.setPosition(m.destinationLocation); //TODO This line slows it down a lot
+        checkPawnPromotion(p); // TODO This will mess with Reverse Move
         moveHistory.add(m);
     }
 
@@ -79,6 +81,7 @@ public class Board {
     // TODO bugged. Doesn't restore piece that was attacked
     // TODO Castling, pawn promotion (+attack), en passant etc.
     public void reverseMove() {
+        /*
         Move m = moveHistory.get(moveHistory.size() - 1);
 
         if(m.isAttack()) {
@@ -89,6 +92,8 @@ public class Board {
         board[m.currentLocation[0]][m.currentLocation[1]] = m.piece;
 
         moveHistory.remove(moveHistory.size() - 1);
+
+         */
     }
 
     private Piece checkPawnPromotion(Piece p){
@@ -98,7 +103,6 @@ public class Board {
                 board[p.x()][p.y()] = p;
             } else if(p.getAllegiance() == Allegiance.BLACK && p.y() == 0) {
                 p = new Queen(p.x(), p.y(), Allegiance.BLACK);
-                System.out.println(p);
                 board[p.x()][p.y()] = p;
             }
         }

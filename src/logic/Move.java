@@ -9,18 +9,18 @@ import java.util.Objects;
 public class Move implements Comparable<Move> {
     int[] currentLocation;
     int[] destinationLocation;
-    Piece piece;
+    //Piece piece;
     boolean attack;
     int heuristicValue;
-    Piece attackedPiece;
+    //Piece attackedPiece;
 
     public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack, Piece attackedPiece){
         this.currentLocation = currentLocation;
         this.destinationLocation = destinationLocation;
-        this.piece = piece;
+        //this.piece = piece;
         this.attack = attack;
         this.heuristicValue = 0;
-        this.attackedPiece = attackedPiece;
+        //this.attackedPiece = attackedPiece;
     }
 
     public boolean isAttack() {
@@ -32,7 +32,7 @@ public class Move implements Comparable<Move> {
         return "Move{" +
                 "currentLocation=" + Arrays.toString(currentLocation) +
                 ", destinationLocation=" + Arrays.toString(destinationLocation) +
-                ", piece=" + piece +
+                ", piece=" + /*piece*/"" +
                 ", heuristicValue=" + heuristicValue +
                 '}';
     }
@@ -44,8 +44,12 @@ public class Move implements Comparable<Move> {
         Move move = (Move) o;
         return attack == move.attack &&
                 Arrays.equals(currentLocation, move.currentLocation) &&
-                Arrays.equals(destinationLocation, move.destinationLocation) &&
-                Objects.equals(piece, move.piece);
+                Arrays.equals(destinationLocation, move.destinationLocation);
+
+                /*&&
+                piece.equals(move.piece);
+
+                 */
     }
 
     public int getHeuristicValue() {

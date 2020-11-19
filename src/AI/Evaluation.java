@@ -21,13 +21,9 @@ public class Evaluation {
         }
 
 
-
-
         List<Move> possibleMoves = board.getAllMoves(allegiance);
 
-
         // Move ordering
-        /*
         for(Move m : possibleMoves){
             Board tempBoard = new Board(board);
             tempBoard.executeMove(m);
@@ -35,13 +31,11 @@ public class Evaluation {
             //board.reverseMove();
         }
 
-         */
-
 
         if(maximizingPlayer){
             int maxEval = Integer.MIN_VALUE;
 
-            //possibleMoves.sort(Collections.reverseOrder()); //MAX
+            possibleMoves.sort(Collections.reverseOrder()); //MAX
             //Collections.sort(possibleMoves);
 
             for (Move m : possibleMoves) {
@@ -72,7 +66,7 @@ public class Evaluation {
             int minEval = Integer.MAX_VALUE;
 
             //possibleMoves.sort(Collections.reverseOrder());
-            //Collections.sort(possibleMoves); // MIN
+            Collections.sort(possibleMoves); // MIN
 
             for (Move m : possibleMoves) {
                 Board tempBoard = new Board(board);

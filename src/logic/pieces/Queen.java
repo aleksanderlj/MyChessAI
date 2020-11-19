@@ -15,8 +15,8 @@ public class Queen extends Piece {
     public List<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
 
-        int x = this.position[0];
-        int y = this.position[1];
+        //int x = this.position[0];
+        //int y = this.position[1];
 
         // Test right
         for(int i = x+1 ; i <= 7 ; i++) {

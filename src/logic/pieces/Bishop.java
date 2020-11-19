@@ -15,8 +15,8 @@ public class Bishop extends Piece{
     public List<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
 
-        int x = this.position[0];
-        int y = this.position[1];
+        //int x = this.position[0];
+        //int y = this.position[1];
         Move m;
         int n, i;
 

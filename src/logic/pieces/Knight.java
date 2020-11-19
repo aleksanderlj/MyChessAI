@@ -16,8 +16,8 @@ public class Knight extends Piece{
         List<Move> legalMoves = new ArrayList<>();
         List<int[]> squares = new ArrayList<>();
 
-        int x = this.position[0];
-        int y = this.position[1];
+        //int x = this.position[0];
+        //int y = this.position[1];
 
         squares.add(new int[]{x+2, y+1});
         squares.add(new int[]{x+2, y-1});

@@ -16,8 +16,8 @@ public class King extends Piece {
         List<Move> legalMoves = new ArrayList<>();
         List<int[]> squares = new ArrayList<>();
 
-        int x = this.position[0];
-        int y = this.position[1];
+        //int x = this.position[0];
+        //int y = this.position[1];
 
         for (int n = x - 1; n < x + 2; n++) {
             for (int i = y - 1; i < y + 2; i++) {
