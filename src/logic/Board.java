@@ -278,6 +278,9 @@ public class Board {
         }
 
         //TODO mirror getAllMoves
+        if(!moveHistory.isEmpty()) {
+            addEnPassantMoves(moves);
+        }
 
         return moves;
     }
