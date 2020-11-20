@@ -6,7 +6,114 @@ import java.awt.*;
 
 public class PieceTest {
     public static void main(String[] args) {
-        testCastling();
+        testEnPassantWhite();
+    }
+
+    private static void testEnPassantWhite(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new Pawn(3, 6, Allegiance.BLACK),
+                new Pawn(4, 4, Allegiance.WHITE),
+                new Pawn(2, 4, Allegiance.WHITE)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        /*
+        for(Move m : board.getAllMoves(Allegiance.BLACK)){
+            if(m.destinationLocation[0] == 3 && m.destinationLocation[1] == 5){
+                board.executeMove(m);
+            }
+        }
+
+         */
+
+        for(Move m : board.getAllMoves(Allegiance.BLACK)){
+            if(m.destinationLocation[0] == 3 && m.destinationLocation[1] == 4){
+                board.executeMove(m);
+            }
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeSpecialMoves(Allegiance.WHITE, SpecialMove.EN_PASSANT);
+
+        /*
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 1){
+                board.executeMove(m);
+            }
+        }
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 0){
+                board.executeMove(m);
+            }
+        }
+
+         */
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if (m.getSpecialMove() == SpecialMove.EN_PASSANT){
+                board.executeMove(m);
+                break;
+            }
+        }
+        board.visualizeState();
+
+    }
+
+    private static void testEnPassantBlack(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new Pawn(3, 1, Allegiance.WHITE),
+                new Pawn(4, 3, Allegiance.BLACK),
+                new Pawn(2, 3, Allegiance.BLACK)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 3 && m.destinationLocation[1] == 3){
+                board.executeMove(m);
+            }
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeSpecialMoves(Allegiance.BLACK, SpecialMove.EN_PASSANT);
+
+        /*
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 1){
+                board.executeMove(m);
+            }
+        }
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 0){
+                board.executeMove(m);
+            }
+        }
+
+         */
+
+        for(Move m : board.getAllMoves(Allegiance.BLACK)){
+            if (m.getSpecialMove() == SpecialMove.EN_PASSANT){
+                board.executeMove(m);
+                break;
+            }
+        }
+        board.visualizeState();
+
     }
 
     private static void testCastling(){
@@ -26,7 +133,7 @@ public class PieceTest {
         System.out.println("--------------");
         board.visualizeState();
         System.out.println("----WHITE-----");
-        board.visualizeCastlingMoves(Allegiance.WHITE);
+        board.visualizeSpecialMoves(Allegiance.WHITE, SpecialMove.CASTLING);
 
         /*
         for(Move m : board.getAllMoves(Allegiance.WHITE)){

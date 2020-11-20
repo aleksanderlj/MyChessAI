@@ -88,7 +88,14 @@ public class Board {
                 rook.setPosition(3, m.destinationLocation[1]);
             }
         }
-        //TODO Check castling
+
+        if(m.specialMove == SpecialMove.EN_PASSANT){
+            if(m.destinationLocation[1] == 5){
+                board[m.destinationLocation[0]][m.destinationLocation[1]-1] = null;
+            } else if(m.destinationLocation[1] == 2){
+                board[m.destinationLocation[0]][m.destinationLocation[1]+1] = null;
+            }
+        }
         //TODO Check en passant
         moveHistory.add(m);
     }
@@ -180,7 +187,7 @@ public class Board {
         System.out.println(s);
     }
 
-    public void visualizeCastlingMoves(Allegiance allegiance) {
+    public void visualizeSpecialMoves(Allegiance allegiance, SpecialMove specialMove) {
         List<Move> moves = getAllMoves(allegiance);
 
         StringBuilder s = new StringBuilder();
@@ -190,7 +197,7 @@ public class Board {
 
                 boolean b = false;
                 for (Move m : moves) {
-                    if(m.getSpecialMove() == SpecialMove.CASTLING) {
+                    if(m.getSpecialMove() == specialMove) {
                         if (m.destinationLocation[0] == x && m.destinationLocation[1] == y) {
                             s.append("+  ");
                             b = true;
@@ -241,6 +248,40 @@ public class Board {
         return pieces;
     }
 
+    public List<Move> getAllAttackingMoves(Allegiance allegiance) {
+        List<Move> moves = new ArrayList<>();
+
+        for (int n = 0; n < board.length; n++) {
+            for (int i = 0; i < board[0].length; i++) {
+                if (board[n][i] != null && board[n][i].getAllegiance() == allegiance) {
+                    for(Move m : board[n][i].calculateLegalMoves(this)){
+                        if(m.isAttack()){
+                            moves.add(m);
+                        }
+                    }
+                }
+            }
+        }
+
+        return moves;
+    }
+
+    public List<Move> getAllMovesSansCastling(Allegiance allegiance) {
+        List<Move> moves = new ArrayList<>();
+
+        for (int n = 0; n < board.length; n++) {
+            for (int i = 0; i < board[0].length; i++) {
+                if (board[n][i] != null && board[n][i].getAllegiance() == allegiance) {
+                    moves.addAll(board[n][i].calculateLegalMoves(this));
+                }
+            }
+        }
+
+        //TODO mirror getAllMoves
+
+        return moves;
+    }
+
     public List<Move> getAllMoves(Allegiance allegiance) {
         List<Move> moves = new ArrayList<>();
 
@@ -254,8 +295,70 @@ public class Board {
 
         addCastlingMoves(moves, allegiance);
 
+        if(!moveHistory.isEmpty()) {
+            addEnPassantMoves(moves);
+        }
+
         return moves;
     }
+
+    private void addEnPassantMoves(List<Move> moves){
+        List<Move> enPassantMoves = new ArrayList<>();
+        Move m = moveHistory.get(moveHistory.size()-1);
+        Piece p = getPiece(m.getDestinationLocation());
+
+        if(p.getAllegiance() == Allegiance.WHITE){
+            if(p instanceof Pawn &&
+                    m.getCurrentLocation()[1] == 1 &&
+                    m.destinationLocation[1] == 3
+            ){
+                if(isEnemyPawn(p.x()+1, p.y(), p.getAllegiance())){
+                    Move newMove = new Move(new int[]{p.x()+1, p.y()}, new int[]{p.x(), p.y()-1}, board[p.x()+1][p.y()], true, p);
+                    newMove.setSpecialMove(SpecialMove.EN_PASSANT);
+                    enPassantMoves.add(newMove);
+                }
+
+                if(isEnemyPawn(p.x()-1, p.y(), p.getAllegiance())){
+                    Move newMove = new Move(new int[]{p.x()-1, p.y()}, new int[]{p.x(), p.y()-1}, board[p.x()-1][p.y()], true, p);
+                    newMove.setSpecialMove(SpecialMove.EN_PASSANT);
+                    enPassantMoves.add(newMove);
+                }
+            }
+        } else {
+            if(p instanceof Pawn &&
+                    m.getCurrentLocation()[1] == 6 &&
+                    m.destinationLocation[1] == 4
+            ){
+                if(isEnemyPawn(p.x()+1, p.y(), p.getAllegiance())){
+                    Move newMove = new Move(new int[]{p.x()+1, p.y()}, new int[]{p.x(), p.y()+1}, board[p.x()+1][p.y()], true, p);
+                    newMove.setSpecialMove(SpecialMove.EN_PASSANT);
+                    enPassantMoves.add(newMove);
+                }
+
+                if(isEnemyPawn(p.x()-1, p.y(), p.getAllegiance())){
+                    Move newMove = new Move(new int[]{p.x()-1, p.y()}, new int[]{p.x(), p.y()+1}, board[p.x()-1][p.y()], true, p);
+                    newMove.setSpecialMove(SpecialMove.EN_PASSANT);
+                    enPassantMoves.add(newMove);
+                }
+            }
+        }
+
+        moves.addAll(enPassantMoves);
+    }
+
+    private boolean isEnemyPawn(int x, int y, Allegiance allegiance){
+        if(isOutOfBounds(x, y)){
+            return false;
+        } else {
+            Piece p = board[x][y];
+            return p != null && p.getAllegiance() != allegiance && p instanceof Pawn;
+        }
+    }
+
+    private boolean isOutOfBounds(int x, int y){
+        return !(x >= 0 && x < 8 && y >=0 && y < 8);
+    }
+
 
     private void addCastlingMoves(List<Move> moves, Allegiance allegiance) {
         List<Move> castlingMoves = new ArrayList<>();
@@ -357,9 +460,9 @@ public class Board {
         if(enemyMoves == null){
             enemyMoves = new ArrayList<>();
             if(allegiance == Allegiance.WHITE){
-                enemyMoves.addAll(getAllMoves(Allegiance.BLACK));
+                enemyMoves.addAll(getAllMovesSansCastling(Allegiance.BLACK));
             } else {
-                enemyMoves.addAll(getAllMoves(Allegiance.WHITE));
+                enemyMoves.addAll(getAllMovesSansCastling(Allegiance.WHITE));
             }
 
         }
