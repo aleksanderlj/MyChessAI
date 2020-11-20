@@ -106,6 +106,11 @@ public abstract class Piece {
         this.y = position[1];
     }
 
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
     public Allegiance getAllegiance(){
         return this.allegiance;
     }

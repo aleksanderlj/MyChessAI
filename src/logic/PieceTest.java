@@ -6,7 +6,50 @@ import java.awt.*;
 
 public class PieceTest {
     public static void main(String[] args) {
-        testPromotion();
+        testCastling();
+    }
+
+    private static void testCastling(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new King(4, 0, Allegiance.WHITE),
+                new Rook(7, 0, Allegiance.WHITE),
+                new Rook(0, 0, Allegiance.WHITE),
+                new Rook(3, 4, Allegiance.BLACK)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        board.visualizeCastlingMoves(Allegiance.WHITE);
+
+        /*
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 1){
+                board.executeMove(m);
+            }
+        }
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if(m.destinationLocation[0] == 7 && m.destinationLocation[1] == 0){
+                board.executeMove(m);
+            }
+        }
+
+         */
+
+        for(Move m : board.getAllMoves(Allegiance.WHITE)){
+            if (m.getSpecialMove() == SpecialMove.CASTLING){
+                board.executeMove(m);
+            }
+        }
+        board.visualizeState();
+
     }
 
     private static void testPromotion(){

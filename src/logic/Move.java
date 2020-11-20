@@ -13,6 +13,7 @@ public class Move implements Comparable<Move> {
     boolean attack;
     int heuristicValue;
     //Piece attackedPiece;
+    SpecialMove specialMove = null;
 
     public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack, Piece attackedPiece){
         this.currentLocation = currentLocation;
@@ -63,5 +64,21 @@ public class Move implements Comparable<Move> {
     @Override
     public int compareTo(Move o) {
         return this.heuristicValue - o.getHeuristicValue();
+    }
+
+    public int[] getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public int[] getDestinationLocation() {
+        return destinationLocation;
+    }
+
+    public SpecialMove getSpecialMove() {
+        return specialMove;
+    }
+
+    public void setSpecialMove(SpecialMove specialMove) {
+        this.specialMove = specialMove;
     }
 }
