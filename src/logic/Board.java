@@ -64,10 +64,15 @@ public class Board {
     }
 
     //TODO
-    // Castling
+    // --Castling
     // --Pawn promotion
-    // En passant
-    public void executeMove(Move m) {
+    // --En passant
+    public boolean executeMove(Move m) {
+        boolean gameEnder = false;
+        if(getPiece(m.destinationLocation) instanceof King){
+            gameEnder = true;
+        }
+
         Piece p = board[m.currentLocation[0]][m.currentLocation[1]];
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
 
@@ -96,8 +101,9 @@ public class Board {
                 board[m.destinationLocation[0]][m.destinationLocation[1]+1] = null;
             }
         }
-        //TODO Check en passant
+        //--TODO Check en passant
         moveHistory.add(m);
+        return gameEnder;
     }
 
     // TODO will crash if reverse is used with no moves

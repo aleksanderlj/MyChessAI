@@ -70,4 +70,14 @@ public class MoveBuilder {
 
         return m;
     }
+
+    public static String unParse(Move m){
+        String s = "";
+        s += (char) (m.getCurrentLocation()[0]+97);
+        s += m.getCurrentLocation()[1]+1;
+        s += "-";
+        s += (char) (m.getDestinationLocation()[0]+97);
+        s += m.getDestinationLocation()[1]+1;
+        return s;
+    }
 }

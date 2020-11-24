@@ -4,8 +4,6 @@ import logic.Board;
 import logic.Move;
 import logic.pieces.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,8 +13,9 @@ public class Evaluation {
     public static boolean gameOver;
 
     //https://www.youtube.com/watch?v=l-hh51ncgDI
-    public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance){
+    public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance) {
         if(depth == 0 || gameOver) {
+            gameOver = false;
             return scoreEvaluation(board, allegiance);
         }
 
@@ -40,7 +39,7 @@ public class Evaluation {
 
             for (Move m : possibleMoves) {
                 Board tempBoard = new Board(board);
-                tempBoard.executeMove(m);
+                gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
 
                 //board.executeMove(m);
@@ -70,7 +69,7 @@ public class Evaluation {
 
             for (Move m : possibleMoves) {
                 Board tempBoard = new Board(board);
-                tempBoard.executeMove(m);
+                gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
 
                 //board.executeMove(m);
@@ -134,31 +133,31 @@ public class Evaluation {
 
         if(p.getAllegiance() == Allegiance.WHITE) {
             if (p instanceof Bishop) {
-                posScore = PreferredCoordinates.WHITE_BISHOP[x][y];
+                posScore += PreferredCoordinates.WHITE_BISHOP[x][y];
             } else if (p instanceof King) {
-                posScore = PreferredCoordinates.WHITE_KING[x][y];
+                posScore += PreferredCoordinates.WHITE_KING[x][y];
             } else if (p instanceof Knight) {
-                posScore = PreferredCoordinates.WHITE_KNIGHT[x][y];
+                posScore += PreferredCoordinates.WHITE_KNIGHT[x][y];
             } else if (p instanceof Pawn) {
-                posScore = PreferredCoordinates.WHITE_PAWN[x][y];
+                posScore += PreferredCoordinates.WHITE_PAWN[x][y];
             } else if (p instanceof Queen) {
-                posScore = PreferredCoordinates.WHITE_QUEEN[x][y];
+                posScore += PreferredCoordinates.WHITE_QUEEN[x][y];
             } else if (p instanceof Rook) {
-                posScore = PreferredCoordinates.WHITE_ROOK[x][y];
+                posScore += PreferredCoordinates.WHITE_ROOK[x][y];
             }
         } else {
             if (p instanceof Bishop) {
-                posScore = PreferredCoordinates.BLACK_BISHOP[x][y];
+                posScore += PreferredCoordinates.BLACK_BISHOP[x][y];
             } else if (p instanceof King) {
-                posScore = PreferredCoordinates.BLACK_KING[x][y];
+                posScore += PreferredCoordinates.BLACK_KING[x][y];
             } else if (p instanceof Knight) {
-                posScore = PreferredCoordinates.BLACK_KNIGHT[x][y];
+                posScore += PreferredCoordinates.BLACK_KNIGHT[x][y];
             } else if (p instanceof Pawn) {
-                posScore = PreferredCoordinates.BLACK_PAWN[x][y];
+                posScore += PreferredCoordinates.BLACK_PAWN[x][y];
             } else if (p instanceof Queen) {
-                posScore = PreferredCoordinates.BLACK_QUEEN[x][y];
+                posScore += PreferredCoordinates.BLACK_QUEEN[x][y];
             } else if (p instanceof Rook) {
-                posScore = PreferredCoordinates.BLACK_ROOK[x][y];
+                posScore += PreferredCoordinates.BLACK_ROOK[x][y];
             }
         }
 
