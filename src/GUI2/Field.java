@@ -22,6 +22,9 @@ public class Field extends JButton implements ActionListener {
             case 1:
                 coords[0] = getChessX();
                 coords[1] = getChessY();
+                if(!pml.choosePiece(getXY())){
+                    clicks = 0;
+                }
                 break;
 
             case 2:
@@ -38,6 +41,9 @@ public class Field extends JButton implements ActionListener {
         return id;
     }
 
+    public int[] getXY(){
+        return new int[]{getChessX(), getChessY()};
+    }
 
     public int getChessX(){
         if(id == 0){
@@ -53,5 +59,13 @@ public class Field extends JButton implements ActionListener {
             return 7;
         }
         return 7-id/8;
+    }
+
+    public boolean isLight(){
+        if (id % 16 >= 0 && id % 16 < 8) {
+            return id % 2 == 0;
+        } else {
+            return id % 2 != 0;
+        }
     }
 }

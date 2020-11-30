@@ -1,6 +1,7 @@
 package GUI2;
 
 import AI.Evaluation;
+import GUI2.res.MyColors;
 import TextGUI.MoveBuilder;
 import logic.Board;
 import logic.Move;
@@ -8,13 +9,11 @@ import logic.pieces.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GUI extends JFrame {
-    Color dark = new Color(71, 116, 54);
-    Color light = new Color(198, 231, 185);
-    Color blue = new Color(93, 161, 231);
+
     JPanel panel = new JPanel();
     Field[] fields = new Field[8 * 8];
 
@@ -28,7 +27,8 @@ public class GUI extends JFrame {
         for (int n = 0; n < 8 * 8; n++) {
             Field f = new Field(n, pml);
             fields[n] = f;
-            setFieldColor(f, n);
+            setFieldDefaultColor(f, n);
+            f.setBorder(BorderFactory.createLineBorder(f.getBackground(), 8));
             f.setBorderPainted(false);
             panel.add(f);
         }
@@ -38,24 +38,47 @@ public class GUI extends JFrame {
 
     private void resetFieldColors() {
         for (int n = 0; n < 8 * 8; n++) {
-            setFieldColor(fields[n], n);
+            setFieldDefaultColor(fields[n], n);
         }
     }
 
-    private void setFieldColor(Field f, int n) {
+    private void setFieldDefaultColor(Field f, int n) {
         if (n % 16 >= 0 && n % 16 < 8) {
             if (n % 2 == 0) {
-                f.setBackground(light);
+                f.setBackground(MyColors.light);
             } else {
-                f.setBackground(dark);
+                f.setBackground(MyColors.dark);
             }
         } else {
             if (n % 2 != 0) {
-                f.setBackground(light);
+                f.setBackground(MyColors.light);
             } else {
-                f.setBackground(dark);
+                f.setBackground(MyColors.dark);
             }
         }
+    }
+
+    public boolean isLight(int fieldId){
+        if (fieldId % 16 >= 0 && fieldId % 16 < 8) {
+            return fieldId % 2 == 0;
+        } else {
+            return fieldId % 2 != 0;
+        }
+    }
+
+    private void setFieldDefaultColor(int[] coords){
+        Field f = fields[coord2Id(coords)];
+        setFieldDefaultColor(f, coord2Id(coords));
+    }
+
+    private void setFieldColor(int[] coords, Color c){
+        Field f = fields[coord2Id(coords)];
+        f.setBorderPainted(true);
+        f.setBackground(c);
+    }
+
+    private void setFieldSelected(int[] coords){
+
     }
 
     public void updateGUI(Board board) {
@@ -64,12 +87,13 @@ public class GUI extends JFrame {
         resetFieldColors();
         for (int n = 0; n < fields.length; n++) {
             setPiece(fields[n], pieces[fields[n].getChessX()][fields[n].getChessY()]);
+            fields[n].setBorderPainted(false);
         }
 
         if (!moveHistory.isEmpty()) {
             Move lastMove = moveHistory.get(moveHistory.size() - 1);
-            fields[coord2Id(lastMove.getCurrentLocation())].setBackground(blue);
-            fields[coord2Id(lastMove.getDestinationLocation())].setBackground(blue);
+            setFieldColor(lastMove.getCurrentLocation(), MyColors.blue);
+            setFieldColor(lastMove.getDestinationLocation(), MyColors.blue);
         }
 
     }
@@ -128,6 +152,7 @@ public class GUI extends JFrame {
         board.initialize();
         PMLImpl pml = new PMLImpl(board);
         GUI gui = new GUI(pml);
+        pml.setGui(gui);
         gui.updateGUI(board);
 
 
@@ -192,10 +217,12 @@ public class GUI extends JFrame {
 
     interface PlayerMoveListener {
         public void playerMoves(int[] coords);
+        boolean choosePiece(int[] coords);
     }
 
     static class PMLImpl implements PlayerMoveListener {
         Board board;
+        GUI gui;
         Allegiance allegiance;
 
         public PMLImpl(Board board) {
@@ -206,6 +233,10 @@ public class GUI extends JFrame {
             this.allegiance = allegiance;
         }
 
+        public void setGui(GUI gui) {
+            this.gui = gui;
+        }
+
         @Override
         public void playerMoves(int[] coords) {
             Move myMove;
@@ -213,12 +244,27 @@ public class GUI extends JFrame {
 
             if (myMove == null) {
                 System.out.println("Not a valid move");
+                gui.updateGUI(board);
             } else {
                 System.out.println(myMove);
                 board.executeMove(myMove);
                 board.visualizeState();
                 playerDone = true;
             }
+        }
+
+        @Override
+        public boolean choosePiece(int[] coords) {
+            boolean valid = false;
+            List<Move> moves = board.getAllMoves(allegiance);
+            for(Move m : moves){
+                if(Arrays.equals(coords, m.getCurrentLocation())){
+                    gui.setFieldColor(m.getCurrentLocation(), MyColors.orange);
+                    gui.setFieldColor(m.getDestinationLocation(), MyColors.orange);
+                    valid = true;
+                }
+            }
+            return valid;
         }
     }
 }
