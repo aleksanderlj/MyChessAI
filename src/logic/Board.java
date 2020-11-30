@@ -77,6 +77,9 @@ public class Board {
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
 
         board[m.destinationLocation[0]][m.destinationLocation[1]] = p;
+        if(p == null){
+            System.out.println("");
+        }
         p.setPosition(m.destinationLocation); //TODO This line slows it down a lot
         checkPawnPromotion(p); // TODO This will mess with Reverse Move
 
@@ -309,6 +312,18 @@ public class Board {
         }
 
         return moves;
+    }
+
+    public boolean isCheck(List<Move> moves, Allegiance allegiance){
+        for(Move m : moves){
+            if(m.isAttack()){
+                Piece target = getPiece(m.getDestinationLocation());
+                if (target.getAllegiance() == allegiance && target instanceof King){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void addEnPassantMoves(List<Move> moves){

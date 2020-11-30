@@ -23,20 +23,23 @@ public class TextGame {
 
          */
 
-        /*
+
         while (true){
             aiMoves(board, Allegiance.WHITE);
             playerMoves(board, Allegiance.BLACK);
         }
-         */
 
 
+
+        /*
         while(true){
             aiMoves(board, Allegiance.WHITE);
             Evaluation.scoreEvaluation(board, Allegiance.WHITE);
             aiMoves(board, Allegiance.BLACK);
             Evaluation.scoreEvaluation(board, Allegiance.BLACK);
         }
+
+         */
 
 
 

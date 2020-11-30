@@ -9,19 +9,19 @@ import java.util.Objects;
 public class Move implements Comparable<Move> {
     int[] currentLocation;
     int[] destinationLocation;
-    //Piece piece;
+    Piece piece;
     boolean attack;
     int heuristicValue;
-    //Piece attackedPiece;
+    Piece attackedPiece;
     SpecialMove specialMove = null;
 
     public Move(int[] currentLocation, int[] destinationLocation, Piece piece, boolean attack, Piece attackedPiece){
         this.currentLocation = currentLocation;
         this.destinationLocation = destinationLocation;
-        //this.piece = piece;
+        this.piece = piece;
         this.attack = attack;
         this.heuristicValue = 0;
-        //this.attackedPiece = attackedPiece;
+        this.attackedPiece = attackedPiece;
     }
 
     public boolean isAttack() {

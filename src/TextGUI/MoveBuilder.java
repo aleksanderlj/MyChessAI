@@ -80,4 +80,48 @@ public class MoveBuilder {
         s += m.getDestinationLocation()[1]+1;
         return s;
     }
+
+    public static Move parseGUI(Board board, int[] coords, Allegiance allegiance){
+        int[] start = new int[2];
+        int[] end = new int[2];
+
+        start[0] = coords[0];
+        start[1] = coords[1];
+        end[0] = coords[2];
+        end[1] = coords[3];
+
+        Piece p = board.getSquare(start[0], start[1]);
+        Piece destination = board.getSquare(end[0], end[1]);
+
+        if(p == null || p.getAllegiance() != allegiance){
+            return null;
+        }
+
+        boolean isAttack;
+
+        if(destination == null){
+            isAttack = false;
+        } else if (destination.getAllegiance() == p.getAllegiance()){
+            isAttack = false;
+        } else {
+            isAttack = true;
+        }
+
+        Move m = new Move(start, end, p, isAttack, destination); // Destination might be friendly
+
+        boolean isLegal = false;
+        List<Move> legalMoves = board.getAllMoves(allegiance);
+        for (Move legalM : legalMoves) {
+            if(m.equals(legalM)){
+                isLegal = true;
+                break;
+            }
+        }
+
+        if(!isLegal){
+            return null;
+        }
+
+        return m;
+    }
 }

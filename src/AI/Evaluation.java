@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Evaluation {
-    public static final int START_DEPTH = 7;
+    public static final int START_DEPTH = 6;
     public static Move bestMove;
     public static boolean gameOver;
 
@@ -19,8 +19,13 @@ public class Evaluation {
             return scoreEvaluation(board, allegiance);
         }
 
+        List<Move> possibleMoves;
+        if(maximizingPlayer){
+            possibleMoves = board.getAllMoves(allegiance);
+        } else {
+            possibleMoves = board.getAllMoves(getOppositeAllegiance(allegiance));
+        }
 
-        List<Move> possibleMoves = board.getAllMoves(allegiance);
 
         // Move ordering
         for(Move m : possibleMoves){
@@ -162,6 +167,14 @@ public class Evaluation {
         }
 
         return posScore;
+    }
+
+    public static Allegiance getOppositeAllegiance(Allegiance allegiance){
+        if(allegiance == Allegiance.WHITE){
+            return Allegiance.BLACK;
+        } else {
+            return Allegiance.WHITE;
+        }
     }
 }
 
