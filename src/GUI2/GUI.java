@@ -73,12 +73,26 @@ public class GUI extends JFrame {
 
     private void setFieldColor(int[] coords, Color c){
         Field f = fields[coord2Id(coords)];
-        f.setBorderPainted(true);
+        //f.setBorderPainted(true);
         f.setBackground(c);
     }
 
     private void setFieldSelected(int[] coords){
+        int id = coord2Id(coords);
+        if(isLight(id)){
+            setFieldColor(coords, MyColors.orange);
+        } else {
+            setFieldColor(coords, MyColors.darkorange);
+        }
+    }
 
+    private void setFieldPreviousMove(int[] coords){
+        int id = coord2Id(coords);
+        if(isLight(id)){
+            setFieldColor(coords, MyColors.blue);
+        } else {
+            setFieldColor(coords, MyColors.darkblue);
+        }
     }
 
     public void updateGUI(Board board) {
@@ -92,8 +106,8 @@ public class GUI extends JFrame {
 
         if (!moveHistory.isEmpty()) {
             Move lastMove = moveHistory.get(moveHistory.size() - 1);
-            setFieldColor(lastMove.getCurrentLocation(), MyColors.blue);
-            setFieldColor(lastMove.getDestinationLocation(), MyColors.blue);
+            setFieldPreviousMove(lastMove.getCurrentLocation());
+            setFieldPreviousMove(lastMove.getDestinationLocation());
         }
 
     }
@@ -259,8 +273,8 @@ public class GUI extends JFrame {
             List<Move> moves = board.getAllMoves(allegiance);
             for(Move m : moves){
                 if(Arrays.equals(coords, m.getCurrentLocation())){
-                    gui.setFieldColor(m.getCurrentLocation(), MyColors.orange);
-                    gui.setFieldColor(m.getDestinationLocation(), MyColors.orange);
+                    gui.setFieldSelected(m.getCurrentLocation());
+                    gui.setFieldSelected(m.getDestinationLocation());
                     valid = true;
                 }
             }
