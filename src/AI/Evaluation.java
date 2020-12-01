@@ -2,6 +2,7 @@ package AI;
 
 import logic.Board;
 import logic.Move;
+import logic.SpecialMove;
 import logic.pieces.*;
 
 import java.util.ArrayList;
@@ -116,18 +117,32 @@ public class Evaluation {
         gameOver = false;
         int kingcounter = 0;
         int score = 0;
+        List<Piece> pieces = board.getAllPieces();
+        int[] allyPawnPos = new int[8];
+        int[] enemyPawnPos = new int[8];
 
-        for (Piece p : board.getAllPieces()) {
+        for (Piece p : pieces) {
             if(p.getAllegiance() == allegiance){
                 score += getPieceScore(p);
             } else {
                 score -= getPieceScore(p);
             }
 
+            if(p instanceof Pawn) {
+                if (p.getAllegiance() == allegiance) {
+                    allyPawnPos[p.x()]++;
+                } else {
+                    enemyPawnPos[p.x()]++;
+                }
+            }
+
             if(p instanceof King){
                 kingcounter++;
             }
         }
+
+        score += checkCastlingScore(board, allegiance);
+        score += checkDoublePawn(allyPawnPos, enemyPawnPos, allegiance);
 
         if(kingcounter != 2){
             gameOver = true;
@@ -141,6 +156,45 @@ public class Evaluation {
 
         score = p.getBaseValue();
         score += parsePositionScore(p);
+
+        if(p instanceof Knight){
+            score += 3*(4-checkKnigthDistanceFromCenter(p));
+        }
+
+        return score;
+    }
+
+    // TODO java math is slow
+    public static int checkKnigthDistanceFromCenter(Piece p){
+        double d = Math.sqrt(Math.pow((3.5-p.x()), 2) + Math.pow((3.5-p.y()), 2));
+        return (int) d;
+    }
+
+    public static int checkCastlingScore(Board board, Allegiance allegiance){
+        int score = 0;
+        Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size()-1);
+        if (lastMove.getSpecialMove() == SpecialMove.CASTLING) {
+            if(board.getPiece(lastMove.getDestinationLocation()).getAllegiance() == allegiance){
+                score += 16;
+            } else {
+                score -= 16;
+            }
+        }
+        return score;
+    }
+
+    public static int checkDoublePawn(int[] allyPawnPos, int[] enemyPawnPos, Allegiance allegiance){
+        int score = 0;
+
+        for (int n=0 ; n < allyPawnPos.length ; n++){
+            if (allyPawnPos[n] > 0){
+                score -= 8;
+            }
+
+            if (enemyPawnPos[n] > 0){
+                score += 8;
+            }
+        }
 
         return score;
     }
@@ -220,7 +274,7 @@ public class Evaluation {
 // Base value modifier
 // -Preferred coordinates
 // isMate
-// Castling
-// Double pawn
+// -Castling
+// -Double pawn
 // Pieces threatened by minor piece
 // Endgame
