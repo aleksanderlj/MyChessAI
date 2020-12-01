@@ -38,12 +38,13 @@ public class Move implements Comparable<Move> {
                 '}';
     }
 
+    // ONLY USE FOR MOVEBUILDER
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Move move = (Move) o;
-        return attack == move.attack &&
+        return //attack == move.attack &&
                 Arrays.equals(currentLocation, move.currentLocation) &&
                 Arrays.equals(destinationLocation, move.destinationLocation);
 

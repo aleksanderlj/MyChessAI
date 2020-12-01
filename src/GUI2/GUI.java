@@ -160,10 +160,19 @@ public class GUI extends JFrame {
         f.setDisabledIcon(new ImageIcon(getClass().getResource("res/" + s + ".png")));
     }
 
+    public void announceEnd(Allegiance allegiance){
+        JOptionPane.showMessageDialog(this, allegiance.name() + " wins!");
+        disableFields();
+        gameRunning = false;
+    }
+
     private static boolean playerDone = false;
+    private static boolean gameRunning;
     public static void main(String[] args) {
+        gameRunning = true;
         Board board = new Board();
         board.initialize();
+        //board = getTestBoard();
         PMLImpl pml = new PMLImpl(board);
         GUI gui = new GUI(pml);
         pml.setGui(gui);
@@ -184,40 +193,48 @@ public class GUI extends JFrame {
 
         switch (input){
             case "AI vs Human":
-                while (true) {
+                while (gameRunning) {
                     aiMoves(gui, board, Allegiance.WHITE);
                     waitForPlayer(gui, pml, board, Allegiance.BLACK);
                 }
-                //break;
+                break;
 
             case "Human vs AI":
-                while (true) {
+                while (gameRunning) {
                     waitForPlayer(gui, pml, board, Allegiance.WHITE);
                     aiMoves(gui, board, Allegiance.BLACK);
                 }
-                //break;
+                break;
 
             case "Human vs Human":
-                while (true) {
+                while (gameRunning) {
                     waitForPlayer(gui, pml, board, Allegiance.WHITE);
                     waitForPlayer(gui, pml, board, Allegiance.BLACK);
 
                 }
-                //break;
+                break;
 
             case "AI vs AI":
-                while (true) {
+                while (gameRunning) {
                     aiMoves(gui, board, Allegiance.WHITE);
                     aiMoves(gui, board, Allegiance.BLACK);
                 }
-                //break;
+                break;
         }
     }
 
     public static void waitForPlayer(GUI gui, PMLImpl pml, Board board, Allegiance allegiance){
+        if(!gameRunning){
+            return;
+        }
         playerDone = false;
         pml.setAllegiance(allegiance);
         gui.enableFields();
+        List<Move> moves = board.getAllMoves(allegiance);
+        board.removeCheckMoves(moves, allegiance);
+        if(moves.isEmpty()){
+            gui.announceEnd(Evaluation.getOppositeAllegiance(allegiance));
+        }
         while (!playerDone) {
             try {
                 Thread.sleep(200);
@@ -229,16 +246,24 @@ public class GUI extends JFrame {
     }
 
     public static void aiMoves(GUI gui, Board board, Allegiance allegiance) {
+        if(!gameRunning){
+            return;
+        }
         gui.disableFields();
         try {
             final long startTime = System.currentTimeMillis();
+            Evaluation.gameNotOverStates = 0;
             Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance);
-            board.executeMove(Evaluation.bestMove);
-            final long endTime = System.currentTimeMillis();
-            System.out.println(Evaluation.bestMove);
-            board.visualizeState();
-            System.out.println(MoveBuilder.unParse(Evaluation.bestMove));
-            System.out.printf("Time taken: %.4fs\n", (endTime - startTime) / 1000.0);
+            if(Evaluation.gameNotOverStates == 0) {
+                gui.announceEnd(Evaluation.getOppositeAllegiance(allegiance));
+            } else {
+                board.executeMove(Evaluation.bestMove);
+                final long endTime = System.currentTimeMillis();
+                System.out.println(Evaluation.bestMove);
+                board.visualizeState();
+                System.out.println(MoveBuilder.unParse(Evaluation.bestMove));
+                System.out.printf("Time taken: %.4fs\n", (endTime - startTime) / 1000.0);
+            }
         } catch (Exception e) {
             System.out.println(movesToText(board.getMoveHistory()));
             e.printStackTrace();
@@ -297,6 +322,7 @@ public class GUI extends JFrame {
         public boolean choosePiece(int[] coords) {
             boolean valid = false;
             List<Move> moves = board.getAllMoves(allegiance);
+            board.removeCheckMoves(moves, allegiance);
             for(Move m : moves){
                 if(Arrays.equals(coords, m.getCurrentLocation())){
                     gui.setFieldSelected(m.getCurrentLocation());
@@ -306,5 +332,20 @@ public class GUI extends JFrame {
             }
             return valid;
         }
+    }
+
+    public static Board getTestBoard(){
+        Board board = new Board();
+        Piece[] arr = {
+                new Rook(3, 7, Allegiance.BLACK),
+                new Rook(4, 7, Allegiance.BLACK),
+                new King(4, 0, Allegiance.WHITE),
+                new King(7, 7, Allegiance.BLACK)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+        return board;
     }
 }

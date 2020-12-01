@@ -60,6 +60,7 @@ public class MoveBuilder {
         for (Move legalM : legalMoves) {
             if(m.equals(legalM)){
                 isLegal = true;
+                m = legalM;
                 break;
             }
         }
@@ -111,9 +112,11 @@ public class MoveBuilder {
 
         boolean isLegal = false;
         List<Move> legalMoves = board.getAllMoves(allegiance);
+        board.removeCheckMoves(legalMoves, allegiance);
         for (Move legalM : legalMoves) {
             if(m.equals(legalM)){
                 isLegal = true;
+                m = legalM;
                 break;
             }
         }

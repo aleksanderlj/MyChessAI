@@ -4,6 +4,7 @@ import logic.Board;
 import logic.Move;
 import logic.pieces.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Evaluation {
     public static final int START_DEPTH = 6;
     public static Move bestMove;
     public static boolean gameOver;
+    public static int gameNotOverStates = 0;
 
     //https://www.youtube.com/watch?v=l-hh51ncgDI
     public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance) {
@@ -29,23 +31,54 @@ public class Evaluation {
 
 
         // Move ordering
+        List<MoveBoardPair> moveBoardPairs = new ArrayList<>(); // Semi-caching
+        List<MoveBoardPair> illegalMoves = new ArrayList<>();
         for(Move m : possibleMoves){
             Board tempBoard = new Board(board);
-            tempBoard.executeMove(m);
+            boolean go = tempBoard.executeMove(m);
             m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance));
+            MoveBoardPair mbp = new MoveBoardPair(m, tempBoard, go);
+            moveBoardPairs.add(mbp);
             //board.reverseMove();
-        }
 
+            // Check for checkmate
+            if(depth == START_DEPTH-1 && !gameOver){
+                gameNotOverStates++;
+            }
+
+            // Shallow way of removing moves that end in check (will only stop ai form executing those moves, not factoring them in calculation)
+            if(depth == START_DEPTH){
+                boolean illegalMove = false;
+                for (Move enemyMove : tempBoard.getAllMoves(getOppositeAllegiance(allegiance))){
+                    if(enemyMove.isAttack() && enemyMove.getSpecialMove() == null){
+                        Piece target = tempBoard.getPiece(enemyMove.getDestinationLocation());
+                        if (target.getAllegiance() == allegiance && target instanceof King){
+                            illegalMove = true;
+                        }
+                    }
+                }
+                if(illegalMove){
+                    illegalMoves.add(mbp);
+                }
+            }
+            //TODO REMOVE CHECK MOVES, CHECK ENEMY MOVES
+        }
+        moveBoardPairs.removeAll(illegalMoves);
 
         if(maximizingPlayer){
             int maxEval = Integer.MIN_VALUE;
 
-            possibleMoves.sort(Collections.reverseOrder()); //MAX
+            moveBoardPairs.sort(Collections.reverseOrder()); // MAX
+            //possibleMoves.sort(Collections.reverseOrder()); //MAX
             //Collections.sort(possibleMoves);
 
-            for (Move m : possibleMoves) {
-                Board tempBoard = new Board(board);
-                gameOver = tempBoard.executeMove(m);
+            //for (Move m : possibleMoves) {
+            for (MoveBoardPair mbp : moveBoardPairs) {
+                Move m = mbp.m;
+                Board tempBoard = mbp.b;
+                gameOver = mbp.go;
+                //Board tempBoard = new Board(board);
+                //gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
 
                 //board.executeMove(m);
@@ -71,11 +104,16 @@ public class Evaluation {
             int minEval = Integer.MAX_VALUE;
 
             //possibleMoves.sort(Collections.reverseOrder());
-            Collections.sort(possibleMoves); // MIN
+            //Collections.sort(possibleMoves); // MIN
+            Collections.sort(moveBoardPairs);
 
-            for (Move m : possibleMoves) {
-                Board tempBoard = new Board(board);
-                gameOver = tempBoard.executeMove(m);
+            //for (Move m : possibleMoves) {
+            for (MoveBoardPair mbp : moveBoardPairs) {
+                Move m = mbp.m;
+                Board tempBoard = mbp.b;
+                gameOver = mbp.go;
+                //Board tempBoard = new Board(board);
+                //gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
 
                 //board.executeMove(m);
@@ -175,6 +213,24 @@ public class Evaluation {
             return Allegiance.BLACK;
         } else {
             return Allegiance.WHITE;
+        }
+    }
+
+    // Simple caching class
+    static class MoveBoardPair implements Comparable<MoveBoardPair>{
+        Move m;
+        Board b;
+        boolean go;
+
+        public MoveBoardPair(Move m, Board b, boolean go){
+            this.m = m;
+            this.b = b;
+            this.go = go;
+        }
+
+        @Override
+        public int compareTo(MoveBoardPair o) {
+            return this.m.getHeuristicValue() - o.m.getHeuristicValue();
         }
     }
 }

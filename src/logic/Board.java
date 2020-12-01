@@ -1,5 +1,6 @@
 package logic;
 
+import AI.Evaluation;
 import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
 import logic.pieces.*;
 
@@ -74,9 +75,6 @@ public class Board {
         }
 
         Piece p = board[m.currentLocation[0]][m.currentLocation[1]];
-        if(p == null){
-            System.out.println("");
-        }
         board[m.currentLocation[0]][m.currentLocation[1]] = null;
 
         board[m.destinationLocation[0]][m.destinationLocation[1]] = p;
@@ -105,8 +103,8 @@ public class Board {
                 board[m.destinationLocation[0]][m.destinationLocation[1]+1] = null;
             }
         }
-        //--TODO Check en passant
         moveHistory.add(m);
+
         return gameEnder;
     }
 
@@ -315,10 +313,25 @@ public class Board {
         return moves;
     }
 
-    public boolean isCheck(List<Move> moves, Allegiance allegiance){
+    // Lazy and should not be used by AI
+    public List<Move> removeCheckMoves(List<Move> moves, Allegiance allegiance){
+        Allegiance opponent = Evaluation.getOppositeAllegiance(allegiance);
+        List<Move> illegalMoves = new ArrayList<>();
+        for(Move m : moves) {
+            Board tempBoard = new Board(this);
+            boolean go = tempBoard.executeMove(m);
+            if(isCheck(tempBoard, tempBoard.getAllMoves(opponent), allegiance)){
+                illegalMoves.add(m);
+            }
+        }
+        moves.removeAll(illegalMoves);
+        return moves;
+    }
+
+    public boolean isCheck(Board board, List<Move> moves, Allegiance allegiance){
         for(Move m : moves){
-            if(m.isAttack()){
-                Piece target = getPiece(m.getDestinationLocation());
+            if(m.isAttack() && m.specialMove == null){
+                Piece target = board.getPiece(m.getDestinationLocation());
                 if (target.getAllegiance() == allegiance && target instanceof King){
                     return true;
                 }
