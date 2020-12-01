@@ -263,6 +263,8 @@ public class GUI extends JFrame {
                 board.visualizeState();
                 System.out.println(MoveBuilder.unParse(Evaluation.bestMove));
                 System.out.printf("Time taken: %.4fs\n", (endTime - startTime) / 1000.0);
+                System.out.println(Evaluation.nodes);
+                Evaluation.nodes = 0;
             }
         } catch (Exception e) {
             System.out.println(movesToText(board.getMoveHistory()));

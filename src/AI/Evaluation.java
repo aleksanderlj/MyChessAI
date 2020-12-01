@@ -14,12 +14,14 @@ public class Evaluation {
     public static Move bestMove;
     public static boolean gameOver;
     public static int gameNotOverStates = 0;
+    public static int nodes = 0;
 
     //https://www.youtube.com/watch?v=l-hh51ncgDI
     public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance) {
         if(depth == 0 || gameOver) {
             int scoreEval = scoreEvaluation(board, allegiance);
             gameOver = false;
+            nodes++;
             return scoreEval;
         }
 
