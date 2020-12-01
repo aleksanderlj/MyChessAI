@@ -46,7 +46,8 @@ public class Evaluation {
                 gameNotOverStates++;
             }
 
-            // Shallow way of removing moves that end in check (will only stop ai form executing those moves, not factoring them in calculation)
+            // Shallow way of removing moves that end in check (will only stop ai form executing those moves, not factoring them in calculation at further depth)
+            // Checking at every depth is slower, but provides better results. I chose speed, since the extra depth matters more to me.
             if(depth == START_DEPTH){
                 boolean illegalMove = false;
                 for (Move enemyMove : tempBoard.getAllMoves(getOppositeAllegiance(allegiance))){
@@ -61,7 +62,6 @@ public class Evaluation {
                     illegalMoves.add(mbp);
                 }
             }
-            //TODO REMOVE CHECK MOVES, CHECK ENEMY MOVES
         }
         moveBoardPairs.removeAll(illegalMoves);
 
