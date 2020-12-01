@@ -74,12 +74,13 @@ public class Board {
         }
 
         Piece p = board[m.currentLocation[0]][m.currentLocation[1]];
-        board[m.currentLocation[0]][m.currentLocation[1]] = null;
-
-        board[m.destinationLocation[0]][m.destinationLocation[1]] = p;
         if(p == null){
             System.out.println("");
         }
+        board[m.currentLocation[0]][m.currentLocation[1]] = null;
+
+        board[m.destinationLocation[0]][m.destinationLocation[1]] = p;
+
         p.setPosition(m.destinationLocation); //TODO This line slows it down a lot
         checkPawnPromotion(p); // TODO This will mess with Reverse Move
 

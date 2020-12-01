@@ -26,7 +26,7 @@ public class MoveBuilder {
         return parse(board, input, allegiance);
     }
 
-    private static Move parse(Board board, String s, Allegiance allegiance){
+    public static Move parse(Board board, String s, Allegiance allegiance){
         s = s.toLowerCase();
         int[] start = new int[2];
         int[] end = new int[2];

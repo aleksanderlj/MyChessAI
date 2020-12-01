@@ -169,23 +169,49 @@ public class GUI extends JFrame {
         pml.setGui(gui);
         gui.updateGUI(board);
 
+        String[] choices = {"AI vs Human", "Human vs AI", "Human vs Human", "AI vs AI"};
+        String input = (String) JOptionPane.showInputDialog(gui, "Choose opponents (White vs Black)", "Start game", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 
-        while (true) {
-            aiMoves(gui, board, Allegiance.WHITE);
-            waitForPlayer(gui, pml, board, Allegiance.BLACK);
+        if(input == null){
+            // tests
+            MoveScript ms = new MoveScript(board, Allegiance.BLACK);
+            while(true){
+                aiMoves(gui, board, Allegiance.WHITE);
+                board.executeMove(ms.next());
+                gui.updateGUI(board);
+            }
         }
 
-        /*
-        while (true) {
-            gui.disableFields();
-            aiMoves(board, Allegiance.WHITE);
-            gui.updateGUI(board);
+        switch (input){
+            case "AI vs Human":
+                while (true) {
+                    aiMoves(gui, board, Allegiance.WHITE);
+                    waitForPlayer(gui, pml, board, Allegiance.BLACK);
+                }
+                //break;
 
-            gui.disableFields();
-            aiMoves(board, Allegiance.BLACK);
-            gui.updateGUI(board);
+            case "Human vs AI":
+                while (true) {
+                    waitForPlayer(gui, pml, board, Allegiance.WHITE);
+                    aiMoves(gui, board, Allegiance.BLACK);
+                }
+                //break;
+
+            case "Human vs Human":
+                while (true) {
+                    waitForPlayer(gui, pml, board, Allegiance.WHITE);
+                    waitForPlayer(gui, pml, board, Allegiance.BLACK);
+
+                }
+                //break;
+
+            case "AI vs AI":
+                while (true) {
+                    aiMoves(gui, board, Allegiance.WHITE);
+                    aiMoves(gui, board, Allegiance.BLACK);
+                }
+                //break;
         }
-         */
     }
 
     public static void waitForPlayer(GUI gui, PMLImpl pml, Board board, Allegiance allegiance){

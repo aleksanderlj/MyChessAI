@@ -15,8 +15,9 @@ public class Evaluation {
     //https://www.youtube.com/watch?v=l-hh51ncgDI
     public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance) {
         if(depth == 0 || gameOver) {
+            int scoreEval = scoreEvaluation(board, allegiance);
             gameOver = false;
-            return scoreEvaluation(board, allegiance);
+            return scoreEval;
         }
 
         List<Move> possibleMoves;
