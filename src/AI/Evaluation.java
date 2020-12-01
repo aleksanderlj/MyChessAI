@@ -39,7 +39,6 @@ public class Evaluation {
             m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance));
             MoveBoardPair mbp = new MoveBoardPair(m, tempBoard, go);
             moveBoardPairs.add(mbp);
-            //board.reverseMove();
 
             // Check for checkmate
             if(depth == START_DEPTH-1 && !gameOver){
@@ -69,20 +68,12 @@ public class Evaluation {
             int maxEval = Integer.MIN_VALUE;
 
             moveBoardPairs.sort(Collections.reverseOrder()); // MAX
-            //possibleMoves.sort(Collections.reverseOrder()); //MAX
-            //Collections.sort(possibleMoves);
 
-            //for (Move m : possibleMoves) {
             for (MoveBoardPair mbp : moveBoardPairs) {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                //Board tempBoard = new Board(board);
-                //gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
-
-                //board.executeMove(m);
-                //int eval = minimax(board, depth-1, alpha, beta, false, allegiance);
 
                 if(depth == START_DEPTH){
                     if(eval > maxEval){
@@ -91,8 +82,6 @@ public class Evaluation {
                 }
 
                 maxEval = Math.max(maxEval, eval);
-
-                //board.reverseMove();
 
                 alpha = Math.max(alpha, eval);
                 if(beta <= alpha){
@@ -103,25 +92,15 @@ public class Evaluation {
         } else {
             int minEval = Integer.MAX_VALUE;
 
-            //possibleMoves.sort(Collections.reverseOrder());
-            //Collections.sort(possibleMoves); // MIN
             Collections.sort(moveBoardPairs);
 
-            //for (Move m : possibleMoves) {
             for (MoveBoardPair mbp : moveBoardPairs) {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                //Board tempBoard = new Board(board);
-                //gameOver = tempBoard.executeMove(m);
                 int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
 
-                //board.executeMove(m);
-                //int eval = minimax(board, depth-1, alpha, beta, true, allegiance);
-
                 minEval = Math.min(minEval, eval);
-
-                //board.reverseMove();
 
                 beta = Math.min(beta, eval);
                 if(beta <= alpha){
