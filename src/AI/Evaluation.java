@@ -53,11 +53,9 @@ public class Evaluation {
             if(depth == START_DEPTH){
                 boolean illegalMove = false;
                 for (Move enemyMove : tempBoard.getAllMoves(getOppositeAllegiance(allegiance))){
-                    if(enemyMove.isAttack() && enemyMove.getSpecialMove() == null){
-                        Piece target = tempBoard.getPiece(enemyMove.getDestinationLocation());
-                        if (target.getAllegiance() == allegiance && target instanceof King){
-                            illegalMove = true;
-                        }
+                    if(enemyMove.isAttack() && enemyMove.getSpecialMove() == SpecialMove.KING_CAPTURE){
+                        illegalMove = true;
+                        break;
                     }
                 }
                 if(illegalMove){

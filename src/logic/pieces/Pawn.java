@@ -2,6 +2,7 @@ package logic.pieces;
 
 import logic.Board;
 import logic.Move;
+import logic.SpecialMove;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +35,13 @@ public class Pawn extends Piece {
             // Hvis der kan tages en brik
             if (x + 1 < 8 && y + 1 < 8) {
                 if (board.getSquare(x + 1, y + 1) != null && board.getSquare(x + 1, y + 1).getAllegiance() != this.allegiance) {
-                    legalMoves.add(new Move(getPosition(), new int[]{x + 1, y + 1}, this, true, board.getSquare(x + 1, y + 1)));
+                    legalMoves.add(checkForKingCapture(new Move(getPosition(), new int[]{x + 1, y + 1}, this, true, board.getSquare(x + 1, y + 1)), board));
                 }
             }
 
             if (x - 1 > -1 && y + 1 < 8) {
                 if (board.getSquare(x - 1, y + 1) != null && board.getSquare(x - 1, y + 1).getAllegiance() != this.allegiance) {
-                    legalMoves.add(new Move(getPosition(), new int[]{x - 1, y + 1}, this, true, board.getSquare(x - 1, y + 1)));
+                    legalMoves.add(checkForKingCapture(new Move(getPosition(), new int[]{x - 1, y + 1}, this, true, board.getSquare(x - 1, y + 1)), board));
                 }
             }
 
@@ -60,13 +61,13 @@ public class Pawn extends Piece {
             // Hvis der kan tages en brik
             if (x + 1 < 8 && y - 1 > -1) {
                 if (board.getSquare(x + 1, y - 1) != null && board.getSquare(x + 1, y - 1).getAllegiance() != this.allegiance) {
-                    legalMoves.add(new Move(getPosition(), new int[]{x + 1, y - 1}, this, true, board.getSquare(x + 1, y - 1)));
+                    legalMoves.add(checkForKingCapture(new Move(getPosition(), new int[]{x + 1, y - 1}, this, true, board.getSquare(x + 1, y - 1)), board));
                 }
             }
 
             if (x - 1 > -1 && y - 1 > -1) {
                 if (board.getSquare(x - 1, y - 1) != null && board.getSquare(x - 1, y - 1).getAllegiance() != this.allegiance) {
-                    legalMoves.add(new Move(getPosition(), new int[]{x - 1, y - 1}, this, true, board.getSquare(x - 1, y - 1)));
+                    legalMoves.add(checkForKingCapture(new Move(getPosition(), new int[]{x - 1, y - 1}, this, true, board.getSquare(x - 1, y - 1)), board));
                 }
             }
         }
@@ -83,5 +84,12 @@ public class Pawn extends Piece {
         } else {
             return null;
         }
+    }
+
+    private Move checkForKingCapture(Move m, Board board){
+        if(m.isAttack() && board.getPiece(m.getDestinationLocation()) instanceof King){
+            m.setSpecialMove(SpecialMove.KING_CAPTURE);
+        }
+        return m;
     }
 }

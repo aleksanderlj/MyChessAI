@@ -2,6 +2,7 @@ package logic.pieces;
 
 import logic.Board;
 import logic.Move;
+import logic.SpecialMove;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +88,11 @@ public abstract class Piece {
             return new Move(getPosition(), new int[]{x, y}, this, false, null);
         } else if (board.getSquare(x, y).getAllegiance() != this.allegiance) {
             //return new Move(this.position, new int[]{x, y}, this, true, board.getSquare(x, y));
-            return new Move(getPosition(), new int[]{x, y}, this, true, board.getSquare(x, y));
+            Move m = new Move(getPosition(), new int[]{x, y}, this, true, board.getSquare(x, y));
+            if(m.isAttack() && board.getPiece(m.getDestinationLocation()) instanceof King){
+                m.setSpecialMove(SpecialMove.KING_CAPTURE);
+            }
+            return m;
         } else if (board.getSquare(x, y).getAllegiance() == this.allegiance) {
             return null;
         } else {

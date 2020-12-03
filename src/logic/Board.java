@@ -285,7 +285,6 @@ public class Board {
             }
         }
 
-        //TODO mirror getAllMoves
         if(!moveHistory.isEmpty()) {
             addEnPassantMoves(moves);
         }
@@ -294,21 +293,9 @@ public class Board {
     }
 
     public List<Move> getAllMoves(Allegiance allegiance) {
-        List<Move> moves = new ArrayList<>();
-
-        for (int n = 0; n < board.length; n++) {
-            for (int i = 0; i < board[0].length; i++) {
-                if (board[n][i] != null && board[n][i].getAllegiance() == allegiance) {
-                    moves.addAll(board[n][i].calculateLegalMoves(this));
-                }
-            }
-        }
+        List<Move> moves = getAllMovesSansCastling(allegiance);
 
         addCastlingMoves(moves, allegiance);
-
-        if(!moveHistory.isEmpty()) {
-            addEnPassantMoves(moves);
-        }
 
         return moves;
     }
@@ -320,7 +307,7 @@ public class Board {
         for(Move m : moves) {
             Board tempBoard = new Board(this);
             boolean go = tempBoard.executeMove(m);
-            if(isCheck(tempBoard, tempBoard.getAllMoves(opponent), allegiance)){
+            if(isCheck(tempBoard.getAllMoves(opponent))){
                 illegalMoves.add(m);
             }
         }
@@ -328,13 +315,10 @@ public class Board {
         return moves;
     }
 
-    public boolean isCheck(Board board, List<Move> moves, Allegiance allegiance){
+    public boolean isCheck(List<Move> moves){
         for(Move m : moves){
-            if(m.isAttack() && m.specialMove == null){
-                Piece target = board.getPiece(m.getDestinationLocation());
-                if (target.getAllegiance() == allegiance && target instanceof King){
-                    return true;
-                }
+            if(m.isAttack() && m.specialMove == SpecialMove.KING_CAPTURE){
+                return true;
             }
         }
         return false;

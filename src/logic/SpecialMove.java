@@ -2,5 +2,6 @@ package logic;
 
 public enum  SpecialMove {
     CASTLING,
-    EN_PASSANT
+    EN_PASSANT,
+    KING_CAPTURE
 }

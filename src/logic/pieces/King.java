@@ -22,15 +22,11 @@ public class King extends Piece {
         for (int n = x - 1; n < x + 2; n++) {
             for (int i = y - 1; i < y + 2; i++) {
                 if (!(n == x && i == y)) {
-                    squares.add(new int[]{n, i});
+                    Move m = testSquareLegality(board, n, i);
+                    if (m != null) {
+                        legalMoves.add(m);
+                    }
                 }
-            }
-        }
-
-        for (int n = 0; n < squares.size(); n++) {
-            Move m = testSquareLegality(board, squares.get(n)[0], squares.get(n)[1]);
-            if (m != null) {
-                legalMoves.add(m);
             }
         }
 
