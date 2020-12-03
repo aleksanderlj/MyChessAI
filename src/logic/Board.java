@@ -11,6 +11,8 @@ public class Board {
 
     Piece[][] board;
     List<Move> moveHistory = new ArrayList<>(); // TODO Make linkedlist?
+    int maxBlackPieces = 0; // I dont know if these help a whole lot honestly
+    int maxWhitePieces = 0;
 
     public Board() {
         this.board = new Piece[8][8];
@@ -21,6 +23,13 @@ public class Board {
         for (int x = 0; x < newBoard.length; x++) {
             for (int y = 0; y < newBoard.length; y++) {
                 newBoard[x][y] = Piece.clone(boardObject.board[x][y]);
+                if (newBoard[x][y] != null){
+                    if(newBoard[x][y].getAllegiance() == Allegiance.WHITE){
+                        maxWhitePieces++;
+                    } else {
+                        maxBlackPieces++;
+                    }
+                }
             }
         }
 
@@ -59,6 +68,9 @@ public class Board {
         for (Piece p : arr) {
             placePiece(p);
         }
+
+        maxBlackPieces = 16;
+        maxWhitePieces = 16;
 
         System.out.println("--------------");
         visualizeState();
@@ -276,11 +288,18 @@ public class Board {
 
     public List<Move> getAllMovesSansCastling(Allegiance allegiance) {
         List<Move> moves = new ArrayList<>();
+        final int MAX_PIECES = getMaxPieceCount(allegiance);
+        int curPieces = 0;
 
         for (int n = 0; n < board.length; n++) {
             for (int i = 0; i < board[0].length; i++) {
+                if(curPieces >= MAX_PIECES){
+                    break;
+                }
+
                 if (board[n][i] != null && board[n][i].getAllegiance() == allegiance) {
                     moves.addAll(board[n][i].calculateLegalMoves(this));
+                    curPieces++;
                 }
             }
         }
@@ -506,5 +525,13 @@ public class Board {
 
     public List<Move> getMoveHistory() {
         return moveHistory;
+    }
+
+    public int getMaxPieceCount(Allegiance allegiance){
+        if(allegiance == Allegiance.WHITE){
+            return maxWhitePieces;
+        } else {
+            return maxBlackPieces;
+        }
     }
 }

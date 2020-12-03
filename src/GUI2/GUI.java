@@ -253,7 +253,7 @@ public class GUI extends JFrame {
         try {
             final long startTime = System.currentTimeMillis();
             Evaluation.gameNotOverStates = 0;
-            Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance);
+            Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance, -1);
             if(Evaluation.gameNotOverStates == 0) {
                 gui.announceEnd(Evaluation.getOppositeAllegiance(allegiance));
             } else {

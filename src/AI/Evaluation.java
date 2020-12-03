@@ -17,9 +17,15 @@ public class Evaluation {
     //public static int nodes = 0;
 
     //https://www.youtube.com/watch?v=l-hh51ncgDI
-    public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance) {
+    public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance, int cachedScoreEval) {
         if(depth == 0 || gameOver) {
-            int scoreEval = scoreEvaluation(board, allegiance);
+            int scoreEval;
+            if(cachedScoreEval != -1) { // this is done twice otherwise because of move ordering, im pretty sure
+                scoreEval = cachedScoreEval;
+            } else {
+                scoreEval = scoreEvaluation(board, allegiance, depth);
+            }
+
             gameOver = false;
             //nodes++;
             return scoreEval;
@@ -39,7 +45,7 @@ public class Evaluation {
         for(Move m : possibleMoves){
             Board tempBoard = new Board(board);
             boolean go = tempBoard.executeMove(m);
-            m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance));
+            m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance, depth));
             MoveBoardPair mbp = new MoveBoardPair(m, tempBoard, go);
             moveBoardPairs.add(mbp);
 
@@ -74,7 +80,7 @@ public class Evaluation {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance);
+                int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance, m.getHeuristicValue());
 
                 if(depth == START_DEPTH){
                     if(eval > maxEval){
@@ -99,7 +105,7 @@ public class Evaluation {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance);
+                int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance, m.getHeuristicValue());
 
                 minEval = Math.min(minEval, eval);
 
@@ -113,13 +119,14 @@ public class Evaluation {
 
     }
 
-    public static int scoreEvaluation(Board board, Allegiance allegiance){
+    public static int scoreEvaluation(Board board, Allegiance allegiance, int depth){
         gameOver = false;
         int kingcounter = 0;
         int score = 0;
         List<Piece> pieces = board.getAllPieces();
         int[] allyPawnPos = new int[8];
         int[] enemyPawnPos = new int[8];
+        Piece survivingKing = null;
 
         for (Piece p : pieces) {
             if(p.getAllegiance() == allegiance){
@@ -138,6 +145,7 @@ public class Evaluation {
 
             if(p instanceof King){
                 kingcounter++;
+                survivingKing = p;
             }
         }
 
@@ -146,6 +154,13 @@ public class Evaluation {
 
         if(kingcounter != 2){
             gameOver = true;
+            if(survivingKing != null) { // In a normal game this will never be null, but it might in tests
+                if (survivingKing.getAllegiance() == allegiance) {
+                    score += 100 * (START_DEPTH-depth+1);
+                } else {
+                    score -= 100 * (START_DEPTH-depth+1);
+                }
+            }
         }
 
         return score;

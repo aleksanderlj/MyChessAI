@@ -61,7 +61,7 @@ public class TextGame {
     public static void aiMoves(Board board, Allegiance allegiance){
         try {
             final long startTime = System.currentTimeMillis();
-            Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance);
+            Evaluation.minimax(board, Evaluation.START_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, allegiance, -1);
             board.executeMove(Evaluation.bestMove);
             final long endTime = System.currentTimeMillis();
             System.out.println(Evaluation.bestMove);
