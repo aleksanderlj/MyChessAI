@@ -1,12 +1,30 @@
 package logic;
 
+import AI.KnightDistance;
 import logic.pieces.*;
-
-import java.awt.*;
 
 public class PieceTest {
     public static void main(String[] args) {
-        testEnPassantWhite();
+        testKnightDistance();
+    }
+
+    private static void testKnightDistance(){
+        Board board = new Board();
+
+        Piece[] arr = {
+                new Knight(7, 7, Allegiance.BLACK),
+                new Knight(4, 5, Allegiance.WHITE)
+        };
+
+        for (Piece p : arr) {
+            board.placePiece(p);
+        }
+
+        System.out.println("--------------");
+        board.visualizeState();
+        System.out.println("----WHITE-----");
+        KnightDistance.visualize(board.board, arr[0]);
+        KnightDistance.visualize(board.board, arr[1]);
     }
 
     private static void testEnPassantWhite(){

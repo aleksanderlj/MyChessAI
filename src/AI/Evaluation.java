@@ -173,16 +173,29 @@ public class Evaluation {
         score += parsePositionScore(p);
 
         if(p instanceof Knight){
-            score += 3*(4-checkKnigthDistanceFromCenter(p));
+            score += 3*(4- checkKnightDistanceFromCenter(p));
         }
 
         return score;
     }
 
     // TODO java math is slow
-    public static int checkKnigthDistanceFromCenter(Piece p){
+    public static int checkKnightDistanceFromCenter(Piece p){
         double d = Math.sqrt(Math.pow((3.5-p.x()), 2) + Math.pow((3.5-p.y()), 2));
         return (int) d;
+
+        // Calculating it correctly makes it worse. Possibly only until other pieces get bonuses as well.
+        /*
+        List<Integer> arr = new ArrayList<>();
+
+        arr.add(KnightDistance.knightDistance(p, 3, 3));
+        arr.add(KnightDistance.knightDistance(p, 3, 4));
+        arr.add(KnightDistance.knightDistance(p, 4, 3));
+        arr.add(KnightDistance.knightDistance(p, 4, 4));
+
+        return Collections.min(arr);
+
+         */
     }
 
     public static int checkCastlingScore(Board board, Allegiance allegiance){
