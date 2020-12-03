@@ -181,10 +181,10 @@ public class Evaluation {
 
     // TODO java math is slow
     public static int checkKnightDistanceFromCenter(Piece p){
-        double d = Math.sqrt(Math.pow((3.5-p.x()), 2) + Math.pow((3.5-p.y()), 2));
-        return (int) d;
+        return (int) Math.sqrt(Math.pow((3.5-p.x()), 2) + Math.pow((3.5-p.y()), 2));
 
         // Calculating it correctly makes it worse. Possibly only until other pieces get bonuses as well.
+        // Also, dont create an array.
         /*
         List<Integer> arr = new ArrayList<>();
 
