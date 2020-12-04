@@ -13,6 +13,7 @@ public abstract class Piece {
     int x, y;
     Allegiance allegiance; // false = white, true = black
     int baseValue;
+    int controlledSquares = 0; // Only updated in Queens, Rooks and Bishops.
 
     public Piece(int x, int y, Allegiance allegiance){
         //this.position = new int[]{x, y};
@@ -44,6 +45,7 @@ public abstract class Piece {
             this.allegiance = Allegiance.BLACK;
         }
         this.baseValue = p.baseValue;
+        this.controlledSquares = p.controlledSquares;
     }
 
     public static Piece clone(Piece p){
@@ -74,6 +76,8 @@ public abstract class Piece {
         } else if (p instanceof King) {
             newPiece = new King(p.x(), p.y(), alli);
         }
+
+        newPiece.controlledSquares = p.controlledSquares;
 
         return newPiece;
     }
@@ -184,6 +188,10 @@ public abstract class Piece {
     @Override
     public int hashCode() {
         return Objects.hash(x, y, allegiance, baseValue);
+    }
+
+    public int getControlledSquares() {
+        return controlledSquares;
     }
 
     /*

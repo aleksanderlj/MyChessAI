@@ -121,6 +121,8 @@ public class Queen extends Piece {
             }
         }
 
+        controlledSquares = legalMoves.size();
+
         return legalMoves;
     }
 }

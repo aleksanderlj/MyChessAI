@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
-
     public Rook(int x, int y, Allegiance allegiance) {
         super(x, y, allegiance);
     }
@@ -70,6 +69,8 @@ public class Rook extends Piece {
                 break;
             }
         }
+
+        controlledSquares = legalMoves.size();
 
         return legalMoves;
     }

@@ -339,13 +339,11 @@ public class GUI extends JFrame {
     public static Board getTestBoard(){
         Board board = new Board();
         Piece[] arr = {
-                new King(4, 0, Allegiance.WHITE),
-                new King(4, 7, Allegiance.BLACK),
-                new Pawn(5, 3, Allegiance.WHITE),
-                new Pawn(5, 4, Allegiance.WHITE),
-                new Pawn(7, 2, Allegiance.BLACK),
-                new Pawn(7, 7, Allegiance.BLACK),
-                new Knight(3, 3, Allegiance.BLACK)
+                new Rook(4, 0, Allegiance.WHITE),
+                new Queen(4, 7, Allegiance.BLACK),
+                new Bishop(5, 3, Allegiance.WHITE),
+                new King(3, 3, Allegiance.BLACK),
+                new King(6, 7, Allegiance.WHITE)
         };
 
         for (Piece p : arr) {

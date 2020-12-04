@@ -68,6 +68,8 @@ public class Bishop extends Piece{
             }
         }
 
+        controlledSquares = legalMoves.size();
+
         return legalMoves;
     }
 }

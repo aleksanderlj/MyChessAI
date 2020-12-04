@@ -18,9 +18,9 @@ public class Evaluation {
 
     //https://www.youtube.com/watch?v=l-hh51ncgDI
     public static int minimax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Allegiance allegiance, int cachedScoreEval) {
-        if(depth == 0 || gameOver) {
+        if (depth == 0 || gameOver) {
             int scoreEval;
-            if(cachedScoreEval != -1) { // this is done twice otherwise because of move ordering, im pretty sure
+            if (cachedScoreEval != -1) { // this is done twice otherwise because of move ordering, im pretty sure
                 scoreEval = cachedScoreEval;
             } else {
                 scoreEval = scoreEvaluation(board, allegiance, depth);
@@ -32,17 +32,19 @@ public class Evaluation {
         }
 
         List<Move> possibleMoves;
-        if(maximizingPlayer){
+        if (maximizingPlayer) {
             possibleMoves = board.getAllMoves(allegiance);
+            //board.getAllMoves(getOppositeAllegiance(allegiance)); // done for calculation of controlledSquares
         } else {
             possibleMoves = board.getAllMoves(getOppositeAllegiance(allegiance));
+            //board.getAllMoves(allegiance); // done for calculation of controlledSquares
         }
 
 
         // Move ordering
         List<MoveBoardPair> moveBoardPairs = new ArrayList<>(); // Semi-caching
         List<MoveBoardPair> illegalMoves = new ArrayList<>();
-        for(Move m : possibleMoves){
+        for (Move m : possibleMoves) {
             Board tempBoard = new Board(board);
             boolean go = tempBoard.executeMove(m);
             m.setHeuristicValue(scoreEvaluation(tempBoard, allegiance, depth));
@@ -50,28 +52,28 @@ public class Evaluation {
             moveBoardPairs.add(mbp);
 
             // Check for checkmate
-            if(depth == START_DEPTH-1 && !gameOver){
+            if (depth == START_DEPTH - 1 && !gameOver) {
                 gameNotOverStates++;
             }
 
             // Shallow way of removing moves that end in check (will only stop ai form executing those moves, not factoring them in calculation at further depth)
             // Checking at every depth is slower, but provides better results. I chose speed, since the extra depth matters more to me.
-            if(depth == START_DEPTH){
+            if (depth == START_DEPTH) {
                 boolean illegalMove = false;
-                for (Move enemyMove : tempBoard.getAllMoves(getOppositeAllegiance(allegiance))){
-                    if(enemyMove.isAttack() && enemyMove.getSpecialMove() == SpecialMove.KING_CAPTURE){
+                for (Move enemyMove : tempBoard.getAllMoves(getOppositeAllegiance(allegiance))) {
+                    if (enemyMove.isAttack() && enemyMove.getSpecialMove() == SpecialMove.KING_CAPTURE) {
                         illegalMove = true;
                         break;
                     }
                 }
-                if(illegalMove){
+                if (illegalMove) {
                     illegalMoves.add(mbp);
                 }
             }
         }
         moveBoardPairs.removeAll(illegalMoves);
 
-        if(maximizingPlayer){
+        if (maximizingPlayer) {
             int maxEval = Integer.MIN_VALUE;
 
             moveBoardPairs.sort(Collections.reverseOrder()); // MAX
@@ -80,10 +82,10 @@ public class Evaluation {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                int eval = minimax(tempBoard, depth-1, alpha, beta, false, allegiance, m.getHeuristicValue());
+                int eval = minimax(tempBoard, depth - 1, alpha, beta, false, allegiance, m.getHeuristicValue());
 
-                if(depth == START_DEPTH){
-                    if(eval > maxEval){
+                if (depth == START_DEPTH) {
+                    if (eval > maxEval) {
                         bestMove = m;
                     }
                 }
@@ -91,7 +93,7 @@ public class Evaluation {
                 maxEval = Math.max(maxEval, eval);
 
                 alpha = Math.max(alpha, eval);
-                if(beta <= alpha){
+                if (beta <= alpha) {
                     break;
                 }
             }
@@ -105,12 +107,12 @@ public class Evaluation {
                 Move m = mbp.m;
                 Board tempBoard = mbp.b;
                 gameOver = mbp.go;
-                int eval = minimax(tempBoard, depth-1, alpha, beta, true, allegiance, m.getHeuristicValue());
+                int eval = minimax(tempBoard, depth - 1, alpha, beta, true, allegiance, m.getHeuristicValue());
 
                 minEval = Math.min(minEval, eval);
 
                 beta = Math.min(beta, eval);
-                if(beta <= alpha){
+                if (beta <= alpha) {
                     break;
                 }
             }
@@ -119,7 +121,7 @@ public class Evaluation {
 
     }
 
-    public static int scoreEvaluation(Board board, Allegiance allegiance, int depth){
+    public static int scoreEvaluation(Board board, Allegiance allegiance, int depth) {
         gameOver = false;
         int kingcounter = 0;
         int score = 0;
@@ -129,13 +131,13 @@ public class Evaluation {
         Piece survivingKing = null;
 
         for (Piece p : pieces) {
-            if(p.getAllegiance() == allegiance){
+            if (p.getAllegiance() == allegiance) {
                 score += getPieceScore(p);
             } else {
                 score -= getPieceScore(p);
             }
 
-            if(p instanceof Pawn) {
+            if (p instanceof Pawn) {
                 if (p.getAllegiance() == allegiance) {
                     allyPawnPos[p.x()]++;
                 } else {
@@ -143,7 +145,7 @@ public class Evaluation {
                 }
             }
 
-            if(p instanceof King){
+            if (p instanceof King) {
                 kingcounter++;
                 survivingKing = p;
             }
@@ -152,13 +154,13 @@ public class Evaluation {
         score += checkCastlingScore(board, allegiance);
         score += checkDoublePawn(allyPawnPos, enemyPawnPos, allegiance);
 
-        if(kingcounter != 2){
+        if (kingcounter != 2) {
             gameOver = true;
-            if(survivingKing != null) { // In a normal game this will never be null, but it might in tests
+            if (survivingKing != null) { // In a normal game this will never be null, but it might in tests
                 if (survivingKing.getAllegiance() == allegiance) {
-                    score += 100 * (START_DEPTH-depth+1);
+                    score += 100 * (START_DEPTH - depth + 1);
                 } else {
-                    score -= 100 * (START_DEPTH-depth+1);
+                    score -= 100 * (START_DEPTH - depth + 1);
                 }
             }
         }
@@ -166,43 +168,54 @@ public class Evaluation {
         return score;
     }
 
-    public static int getPieceScore(Piece p){
+    public static int getPieceScore(Piece p) {
         int score;
 
         score = p.getBaseValue();
         score += parsePositionScore(p);
 
-        if(p instanceof Knight){
-            score += 3*(4- checkKnightDistanceFromCenter(p));
+        if (p instanceof Knight) {
+            score += 3 * (4 - checkKnightDistanceFromCenter(p));
         }
+        /*
+        else if (p instanceof Queen) {
+            score += 1 * p.getControlledSquares();
+        } else if (p instanceof Rook) {
+            score += 1.5 * p.getControlledSquares();
+        } else if (p instanceof Bishop) {
+            score += 2 * p.getControlledSquares();
+        }
+
+         */
 
         return score;
     }
 
     // TODO java math is slow
-    public static int checkKnightDistanceFromCenter(Piece p){
-        return (int) Math.sqrt(Math.pow((3.5-p.x()), 2) + Math.pow((3.5-p.y()), 2));
+    public static int checkKnightDistanceFromCenter(Piece p) {
+        return (int) Math.sqrt(Math.pow((3.5 - p.x()), 2) + Math.pow((3.5 - p.y()), 2));
 
         // Calculating it correctly makes it worse. Possibly only until other pieces get bonuses as well.
         // Also, dont create an array.
+
         /*
-        List<Integer> arr = new ArrayList<>();
+        int distance = 64;
 
-        arr.add(KnightDistance.knightDistance(p, 3, 3));
-        arr.add(KnightDistance.knightDistance(p, 3, 4));
-        arr.add(KnightDistance.knightDistance(p, 4, 3));
-        arr.add(KnightDistance.knightDistance(p, 4, 4));
+        distance = Math.min(KnightDistance.knightDistance(p, 3, 3), distance);
+        distance = Math.min(KnightDistance.knightDistance(p, 3, 4), distance);
+        distance = Math.min(KnightDistance.knightDistance(p, 4, 3), distance);
+        distance = Math.min(KnightDistance.knightDistance(p, 4, 4), distance);
 
-        return Collections.min(arr);
+        return distance;
 
          */
     }
 
-    public static int checkCastlingScore(Board board, Allegiance allegiance){
+    public static int checkCastlingScore(Board board, Allegiance allegiance) {
         int score = 0;
-        Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size()-1);
+        Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size() - 1);
         if (lastMove.getSpecialMove() == SpecialMove.CASTLING) {
-            if(board.getPiece(lastMove.getDestinationLocation()).getAllegiance() == allegiance){
+            if (board.getPiece(lastMove.getDestinationLocation()).getAllegiance() == allegiance) {
                 score += 16;
             } else {
                 score -= 16;
@@ -211,15 +224,15 @@ public class Evaluation {
         return score;
     }
 
-    public static int checkDoublePawn(int[] allyPawnPos, int[] enemyPawnPos, Allegiance allegiance){
+    public static int checkDoublePawn(int[] allyPawnPos, int[] enemyPawnPos, Allegiance allegiance) {
         int score = 0;
 
-        for (int n=0 ; n < allyPawnPos.length ; n++){
-            if (allyPawnPos[n] > 0){
+        for (int n = 0; n < allyPawnPos.length; n++) {
+            if (allyPawnPos[n] > 0) {
                 score -= 8;
             }
 
-            if (enemyPawnPos[n] > 0){
+            if (enemyPawnPos[n] > 0) {
                 score += 8;
             }
         }
@@ -231,12 +244,12 @@ public class Evaluation {
         return bestMove;
     }
 
-    public static int parsePositionScore(Piece p){
+    public static int parsePositionScore(Piece p) {
         int x = p.x();
         int y = p.y();
         int posScore = 0;
 
-        if(p.getAllegiance() == Allegiance.WHITE) {
+        if (p.getAllegiance() == Allegiance.WHITE) {
             if (p instanceof Bishop) {
                 posScore += PreferredCoordinates.WHITE_BISHOP[x][y];
             } else if (p instanceof King) {
@@ -269,8 +282,8 @@ public class Evaluation {
         return posScore;
     }
 
-    public static Allegiance getOppositeAllegiance(Allegiance allegiance){
-        if(allegiance == Allegiance.WHITE){
+    public static Allegiance getOppositeAllegiance(Allegiance allegiance) {
+        if (allegiance == Allegiance.WHITE) {
             return Allegiance.BLACK;
         } else {
             return Allegiance.WHITE;
@@ -278,12 +291,12 @@ public class Evaluation {
     }
 
     // Simple caching class
-    static class MoveBoardPair implements Comparable<MoveBoardPair>{
+    static class MoveBoardPair implements Comparable<MoveBoardPair> {
         Move m;
         Board b;
         boolean go;
 
-        public MoveBoardPair(Move m, Board b, boolean go){
+        public MoveBoardPair(Move m, Board b, boolean go) {
             this.m = m;
             this.b = b;
             this.go = go;

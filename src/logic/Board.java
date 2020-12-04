@@ -11,8 +11,8 @@ public class Board {
 
     Piece[][] board;
     List<Move> moveHistory = new ArrayList<>(); // TODO Make linkedlist?
-    int maxBlackPieces = 0; // I dont know if these help a whole lot honestly
-    int maxWhitePieces = 0;
+    int maxBlackPieces = 64; // I dont know if these help a whole lot honestly
+    int maxWhitePieces = 64;
 
     public Board() {
         this.board = new Piece[8][8];
