@@ -158,9 +158,9 @@ public class Evaluation {
             gameOver = true;
             if (survivingKing != null) { // In a normal game this will never be null, but it might in tests
                 if (survivingKing.getAllegiance() == allegiance) {
-                    score += 100 * (START_DEPTH - depth + 1);
+                    score += 100 * (START_DEPTH - (depth + 1));
                 } else {
-                    score -= 100 * (START_DEPTH - depth + 1);
+                    score -= 100 * (START_DEPTH - (depth + 1));
                 }
             }
         }
